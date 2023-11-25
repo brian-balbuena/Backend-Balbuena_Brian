@@ -1,4 +1,3 @@
-
 const fs = require('fs');
 
 class ProductManager {
@@ -6,23 +5,21 @@ class ProductManager {
         this.path = path;
     };
 
-    static id = 0;
-
     async addProduct(infoProduct) {
 
-        let resultGetCode = this.#getCodeProduts(infoProduct.code);
+        const resultGetCode = await this.#getCodeProduts(infoProduct.code);
         if (resultGetCode !== undefined) {
             return console.error("Codigo incorrecto");
         };
 
-        let validation = this.#validationData(infoProduct);
+        const validation = this.#validationData(infoProduct);
         if (!validation) {
             return console.error("Todos los campos son obligatorios");
         };
 
         try {
             const dbProducts = await this.getProducts();
-            const productAdd = this.#mappingProduct(infoProduct);
+            const productAdd = await this.#mappingProduct(infoProduct);
 
             dbProducts.push(productAdd);
 
@@ -31,7 +28,7 @@ class ProductManager {
 
             return console.log("Producto cargado con exito!!!");
         } catch (error) {
-            return console.error("Error al cargar rl producto");
+            return console.error("Error al cargar el producto");
         }
 
     };
@@ -49,8 +46,11 @@ class ProductManager {
 
     };
 
-    getProductById(id) {
-        let getProductId = this.products.find(product => product.id === id);
+    async getProductById(id) {
+
+        const data = await this.getProducts();
+
+        const getProductId = data.find(product => product.id === id);
 
         if (getProductId == undefined) {
             return "Not found";
@@ -60,13 +60,69 @@ class ProductManager {
     }
 
 
-    #getCodeProduts(code) {
-        /*let validationcode = this.products.find(product => product.code == code);
+    async updateProduct(id, infoNew){
 
-        return validationcode;*/
+        const getIndex = await this.#getIndexProduct(id);
+        if(getIndex !== -1){
 
-        // FALTA CORREGIR ESTA VERIFICAION QUE HACE QUE NO SE PUEDAN CARGAR PRODUCTOS YA CARGADOS POR CODIGO
-        return undefined;
+            try {
+                const productsUpdate = await this.#mappingProductUpdate(getIndex, infoNew);
+                const productsCarga = JSON.stringify(productsUpdate);
+
+                await fs.promises.writeFile(this.path, productsCarga, "utf-8");
+
+                return console.log("Producto editado con exito!!!");
+
+            } catch (error) {
+                console.error("Error al editar el producto");
+            }
+
+
+        }else{
+            return console.error(`EL ${id} no existe`);
+        }
+
+    };
+
+    async deleteProduct(id){
+
+        const getIndex = await this.#getIndexProduct(id);
+        if(getIndex !== -1){
+
+            try {
+                let data = await this.getProducts();
+                data.splice(getIndex, 1);
+
+                const productsCarga = JSON.stringify(data);
+                await fs.promises.writeFile(this.path, productsCarga, "utf-8");
+
+                return console.log("Producto borrado con exito!!!");
+
+            } catch (error) {
+                console.error("Error al borrar el producto");
+            }
+        }else{
+            return console.error(`EL ${id} no existe`);
+        }
+    };
+
+
+
+    async #getCodeProduts(code) {
+
+        const data = await this.getProducts();
+
+        const validationcode = data.find(product => product.code == code);
+
+        return validationcode;
+    };
+
+    async #getIndexProduct(id){
+        const data = await this.getProducts();
+
+        const index = data.findIndex( (obj) => obj.id === id);
+
+        return index;
     };
 
     #validationData(info) {
@@ -79,11 +135,11 @@ class ProductManager {
         return validation
     };
 
-    #mappingProduct(infoProduct) {
+    async #mappingProduct(infoProduct) {
 
-        ProductManager.id++;
+        const idNew = await this.#assignId();
         const newProduct = {
-            id: ProductManager.id,
+            id: idNew,
             title: infoProduct.title,
             description: infoProduct.description,
             price: infoProduct.price,
@@ -94,6 +150,36 @@ class ProductManager {
 
         return newProduct;
     };
+
+    async #mappingProductUpdate(index, infoNew){
+
+        const products = await this.getProducts();
+
+        products[index].id = products[index].id;
+        products[index].title = infoNew.title == null ? products[index].title : infoNew.title;
+        products[index].description = infoNew.description == null ? products[index].description : infoNew.description;
+        products[index].price = infoNew.price == null ? products[index].price : infoNew.price;
+        products[index].thumbnail = infoNew.thumbnail == null ? products[index].thumbnail : infoNew.thumbnail;
+        products[index].code = infoNew.code == null ? products[index].code : infoNew.code;
+        products[index].stock = infoNew.stock == null ? products[index].stock : infoNew.stock;
+  
+        return products;
+    };
+
+    async #assignId(){
+        const data = await this.getProducts();
+
+        if(data.length === 0){
+            return 1;
+        };
+        const ultimoObj = data[data.length -1];
+        const idUltimoObj = ultimoObj.id;
+
+        const id = idUltimoObj + 1;
+       
+        return id;
+    };
+
 };
 
 
@@ -101,84 +187,52 @@ const test = async () => {
 
     const productManager = new ProductManager('./bd_Productos.json');
 
-    let productos = await productManager.getProducts();
-    console.log(productos);
+    //TEST ARRAY PRODUCTOS
+    /* let productos = await productManager.getProducts();
+    console.log(productos); */
 
-  /*  const infoProducto = {
+    //TEST CARGA DE PRODUCTOS
+   /*  const infoProducto = {
         title: "remera",
         description: "remera lisa",
         price: 2500,
         thumbnail: "././lalalla",
         code: "00121",
         stock: 500,
-    }
+    } */
 
-    const infoProducto1 = {
-        title: "medias",
-        description: "medias lisas",
-        price: 500,
+   /*  const infoProducto1 = {
+        title: "pantalon",
+        description: "pantalon largo",
+        price: 1700,
         thumbnail: "././lalalla",
-        code: "00002",
-        stock: 400,
-    }
+        code: "00044",
+        stock: 200,
+    } */
 
-    await productManager.addProduct(infoProducto);
-    await productManager.addProduct(infoProducto1);*/
+    /* await productManager.addProduct(infoProducto); */
+    /* await productManager.addProduct(infoProducto1); */
 
 
-    //productos = await productManager.getProducts();
+    //TEST BUSQUEDA DE PRODUCTO POR ID
+   /* const productId = await productManager.getProductById(2);
+   console.log(productId); */
+
+
+   //TEST EDIT DE PRODUCTO
+/*    const productEdit = {
+    title: "gorro",
+   }; 
+   await productManager.updateProduct(2, productEdit); */
+
+
+   //TEST LISTA DE PRODUCTOS
+    /* productos = await productManager.getProducts(); */
+
+
+    //TEST DELET PRODUCTO
+   /*  await productManager.deleteProduct(2); */
+
 };
 
 test();
-
-
-
-
-
-
-
-
-
-
-//console.log("empieza")
-
-//const productManager = new ProductManager();
-
-//let infoProducto = {
-// title: "remera",
-// description: "remera lisa",
-// price: 2500,
-// thumbnail: "././lalalla",
-// code: "00121",
-// stock: 500,
-//}
-//productManager.addProduct(infoProducto);
-
-//let infoProducto2 = {
-//  title: "pantalon",
-//description: "pantalon liso",
-//price: 5200,
-//thumbnail: "././lalalla",
-//code: "00445",
-//stock: 20,
-//}
-//productManager.addProduct(infoProducto2);
-
-//let infoProducto3 = {
-//  title: "medias",
-//  description: "medias lisas",
-//  price: 500,
-//  thumbnail: "././lalalla",
-//  code: "00002",
-//  stock: 400,
-//}
-//productManager.addProduct(infoProducto3);
-
-//console.log("*************************")
-//console.log("Lista de productos")
-//const productos = productManager.getProducts();
-//console.log(productos);
-
-/*const buscar = productManager.getProductById(2);
-console.log("*************************")
-console.log("Producto buscado", buscar);*/
