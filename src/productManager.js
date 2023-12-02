@@ -1,6 +1,6 @@
-const fs = require('fs');
+import fs from 'fs';
 
-class ProductManager {
+export class ProductManager {
     constructor(path) {
         this.path = path;
     };
@@ -64,20 +64,23 @@ class ProductManager {
 
         const getIndex = await this.#getIndexProduct(id);
         if(getIndex !== -1){
-
-            try {
-                const productsUpdate = await this.#mappingProductUpdate(getIndex, infoNew);
-                const productsCarga = JSON.stringify(productsUpdate);
-
-                await fs.promises.writeFile(this.path, productsCarga, "utf-8");
-
-                return console.log("Producto editado con exito!!!");
-
-            } catch (error) {
-                console.error("Error al editar el producto");
-            }
-
-
+           /*  const validationKey = await this.#validationKey(infoNew);
+            if(validationKey){ */
+                try {
+                    const productsUpdate = await this.#mappingProductUpdate(getIndex, infoNew);
+                    const productsCarga = JSON.stringify(productsUpdate);
+    
+                    await fs.promises.writeFile(this.path, productsCarga, "utf-8");
+    
+                    return console.log("Producto editado con exito!!!");
+    
+                } catch (error) {
+                    console.error("Error al editar el producto");
+                }
+            /* }else{
+                return console.error('El objeto no coincide');
+            } */
+       
         }else{
             return console.error(`EL ${id} no existe`);
         }
@@ -135,6 +138,27 @@ class ProductManager {
         return validation
     };
 
+    #validationKey(info){
+
+        //NO funciona
+
+        const keys = ['title', 'description', 'price', 'thumbnail', 'code', 'stock'];
+        const infoKeys = Object.keys(info);
+        /* const validation = JSON.stringify(keys) === JSON.stringify(infoKeys);
+          return validation; */
+           let acumulador = 0;
+          infoKeys.forEach((infoKey) => {
+            let validation = keys.includes(infoKey);
+            if(validation){
+                acumulador++;
+            }
+            console.log('entro')
+          });
+
+          console.log(acumulador);
+          return acumulador;
+    };
+
     async #mappingProduct(infoProduct) {
 
         const idNew = await this.#assignId();
@@ -181,7 +205,7 @@ class ProductManager {
     };
 
 };
-
+  
 
 const test = async () => {
 
@@ -192,7 +216,7 @@ const test = async () => {
     console.log(productos); */
 
     //TEST CARGA DE PRODUCTOS
-   /*  const infoProducto = {
+ /*    const infoProducto = {
         title: "remera",
         description: "remera lisa",
         price: 2500,
@@ -201,7 +225,7 @@ const test = async () => {
         stock: 500,
     } */
 
-   /*  const infoProducto1 = {
+    /* const infoProducto1 = {
         title: "pantalon",
         description: "pantalon largo",
         price: 1700,
@@ -211,7 +235,7 @@ const test = async () => {
     } */
 
     /* await productManager.addProduct(infoProducto); */
-    /* await productManager.addProduct(infoProducto1); */
+   /*  await productManager.addProduct(infoProducto1); */
 
 
     //TEST BUSQUEDA DE PRODUCTO POR ID
@@ -220,7 +244,7 @@ const test = async () => {
 
 
    //TEST EDIT DE PRODUCTO
-/*    const productEdit = {
+ /*   const productEdit = {
     title: "gorro",
    }; 
    await productManager.updateProduct(2, productEdit); */
