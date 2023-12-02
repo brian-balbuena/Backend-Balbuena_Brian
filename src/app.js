@@ -4,7 +4,7 @@ import { ProductManager } from './productManager.js';
 const app = express();
 const PORT = 8080;
 
-const productManager = new ProductManager('./bd_Productos.json');
+const productManager = new ProductManager('./db_Productos.json');
 
 app.use(express.json());
 app.use(express.urlencoded({extended: true}));
@@ -30,10 +30,10 @@ app.get('/products', async (req, res) => {
     return; //finalizo la ejecucion 
 });
 
-app.get('/products/:id', async (req, res) => {
-    const { id } = req.params;
-    
-    const productId = await productManager.getProductById(+id);
+app.get('/products/:pid', async (req, res) => {
+    const { pid } = req.params;
+
+    const productId = await productManager.getProductById(+pid);
 
     res.send(productId);
 });
