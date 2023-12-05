@@ -4,7 +4,7 @@ import { ProductManager } from './productManager.js';
 const app = express();
 const PORT = 8080;
 
-const productManager = new ProductManager('./db_Productos.json');
+const productManager = new ProductManager('../db_Productos.json');
 
 app.use(express.json());
 app.use(express.urlencoded({extended: true}));
@@ -34,6 +34,10 @@ app.get('/products/:pid', async (req, res) => {
     const { pid } = req.params;
 
     const productId = await productManager.getProductById(+pid);
+
+    if(productId === undefined){
+        return res.send({message: 'invalid id'});
+    }
 
     res.send(productId);
 });

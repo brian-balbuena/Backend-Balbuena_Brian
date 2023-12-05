@@ -52,10 +52,6 @@ export class ProductManager {
 
         const getProductId = data.find(product => product.id === id);
 
-        if (getProductId == undefined) {
-            return "Not found";
-        }
-
         return getProductId;
     }
 
@@ -215,7 +211,7 @@ const test = async () => {
     console.log(productos); */
 
     //TEST CARGA DE PRODUCTOS
-  /*   const infoProducto = {
+ /*    const infoProducto = {
         title: "remera",
         description: "remera lisa",
         price: 2500,
