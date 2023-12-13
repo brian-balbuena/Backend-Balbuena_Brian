@@ -9,12 +9,15 @@ import fs from 'fs';
 
         const resultGetCode = await this.#getCodeProduts(infoProduct.code);
         if (resultGetCode !== undefined) {
-            return console.error("Codigo incorrecto");
+            console.error("Codigo incorrecto");
+            return false;
         };
 
+        console.log(infoProduct);
         const validation = this.#validationData(infoProduct);
         if (!validation) {
-            return console.error("Todos los campos son obligatorios");
+            console.error("Todos los campos son obligatorios");
+            return false;
         };
 
         try {
@@ -26,9 +29,11 @@ import fs from 'fs';
             const products = JSON.stringify(dbProducts);
             await fs.promises.writeFile(this.path, products, "utf-8");
 
-            return console.log("Producto cargado con exito!!!");
+            console.log("Producto cargado con exito!!!");
+            return true;
         } catch (error) {
-            return console.error("Error al cargar el producto");
+            console.error("Error al cargar el producto");
+            return false;
         }
 
     };
@@ -49,8 +54,6 @@ import fs from 'fs';
     async getProductById(id) {
 
         const data = await this.getProducts();
-        console.log(data, 'data product');
-
         const getProductId = data.find(product => product.id === +id);
 
         return getProductId;
@@ -59,7 +62,7 @@ import fs from 'fs';
 
     async updateProduct(id, infoNew){
 
-        const getIndex = await this.#getIndexProduct(id);
+        const getIndex = await this.#getIndexProduct(+id);
         if(getIndex !== -1){
             
             const validationKey = await this.#validationKey(infoNew);
@@ -70,17 +73,21 @@ import fs from 'fs';
     
                     await fs.promises.writeFile(this.path, productsCarga, "utf-8");
     
-                    return console.log("Producto editado con exito!!!");
+                    console.log("Producto editado con exito!!!");
+                    return true;
     
                 } catch (error) {
                     console.error("Error al editar el producto");
+                    return false;
                 }
             }else{
-                return console.error('El objeto no coincide');
+                console.error('El objeto no coincide');
+                return false;
             }
        
         }else{
-            return console.error(`EL ${id} no existe`);
+            console.error(`EL ${id} no existe`);
+            return false;
         }
 
     };
@@ -97,13 +104,16 @@ import fs from 'fs';
                 const productsCarga = JSON.stringify(data);
                 await fs.promises.writeFile(this.path, productsCarga, "utf-8");
 
-                return console.log("Producto borrado con exito!!!");
+                console.log("Producto borrado con exito!!!");
+                return true;
 
             } catch (error) {
                 console.error("Error al borrar el producto");
+                return false;
             }
         }else{
-            return console.error(`EL ${id} no existe`);
+            console.error(`EL ${id} no existe`);
+            return false;
         }
     };
 
@@ -174,16 +184,15 @@ import fs from 'fs';
     };
 
     async #mappingProductUpdate(index, infoNew){
-
         const products = await this.getProducts();
 
         products[index].id = products[index].id;
         products[index].title = infoNew.title == null ? products[index].title : infoNew.title;
         products[index].description = infoNew.description == null ? products[index].description : infoNew.description;
-        products[index].price = infoNew.price == null ? products[index].price : infoNew.price;
+        products[index].price = infoNew.price == null ? products[index].price : +infoNew.price;
         products[index].thumbnail = infoNew.thumbnail == null ? products[index].thumbnail : infoNew.thumbnail;
         products[index].code = infoNew.code == null ? products[index].code : infoNew.code;
-        products[index].stock = infoNew.stock == null ? products[index].stock : infoNew.stock;
+        products[index].stock = infoNew.stock == null ? products[index].stock : +infoNew.stock;
   
         return products;
     };

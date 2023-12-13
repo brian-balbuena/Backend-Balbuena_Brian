@@ -16,8 +16,7 @@ productsRouter.get('/', async (req, res) => {
     
     const products = await productManager.getProducts()
     if( limit > products.length || limit == 0){
-        res.send('Error en el limite');
-        return; //finalizo la ejecucion 
+        return res.status(404).send({massage: 'product not found'});
     }
   
     const productsLimit = products.slice(0, limit);   
@@ -35,6 +34,42 @@ productsRouter.get('/:pid', async (req, res) => {
     }
 
     res.send(productId);
+});
+
+productsRouter.post('/', async (req, res) => {
+    const infoProduct = req.body;
+    const productAdd = await productManager.addProduct(infoProduct);
+
+    console.log(infoProduct, 'product body');
+    if(!productAdd){
+        return res.status(400).send({message: 'error: product not added'});
+    }
+
+    return res.send({message: 'product added'});
+});
+
+productsRouter.put('/:pId', async (req, res) => {
+    const { pId } = req.params;
+    const infoNew = req.body;
+
+    console.log(infoNew, 'info nueva body')
+    const productUpdate = await productManager.updateProduct(+pId, infoNew);
+
+    if(!productUpdate){
+        return res.status(404).send({massage: 'product not found'});
+    }
+    res.send({massage: 'product updated'});
+});
+
+productsRouter.delete('/:pId', async (req, res) => {
+    const { pid } = req.params;
+    const productDeleted = await productManager.deleteProduct(+pid);
+
+    if(!productDeleted){
+        return res.status(404).send({massage: 'product not found'});
+    }
+
+    res.send({massage: 'product deleted'});
 });
 
 export default productsRouter;

@@ -45,19 +45,24 @@ class CartManager {
             return false;
         }
 
-        if(!cart.length){
-            cart.products = [ {id: productId, quantity: 1} ];
+        const carts = await this.getCarts();
+        const index = carts.findIndex(cart => cart.id === +cartId);
+
+        if(!cart.products.length){
+            
+            cart.products = [ {id: +productId, quantity: 1} ];
         }else{
             const existingProduct = cart.products.find(product => product.id === +productId);
             if(existingProduct){
-                existingProduct.quantity++;
+                existingProduct.quantity = existingProduct.quantity + 1;
             }else{
-                cart.products = [...cart.products, {id: productId, quantity: 1}];
+                cart.products = [...cart.products, {id: +productId, quantity: 1}];
             }
         }
 
         try {
-            const productStrinify = JSON.stringify(cart);
+            carts[index] = cart;
+            const productStrinify = JSON.stringify(carts);
             await fs.promises.writeFile(this.path, productStrinify);
 
             return true;
@@ -72,7 +77,7 @@ class CartManager {
         try {
             const data = await fs.promises.readFile(this.path, "utf-8");
             const dataArray = JSON.parse(data);
-            console.log( data, 'data array!!!!!!!');
+
             return dataArray;
 
         } catch (error) {
@@ -84,7 +89,6 @@ class CartManager {
     async getCartsById(cartId){
         try {
             const data = await this.getCarts();
-            console.log(typeof data, 'quetrae');
             const dataId = data.find(cart => cart.id === +cartId);
 
             if(!dataId){
