@@ -1,1 +1,20 @@
-[{"id":1,"title":"remera","description":"remera lisa","price":2500,"thumbnail":"././lalalla","code":"00121","stock":500},{"id":2,"title":"pantalon","description":"pantalon largo","price":1700,"thumbnail":"././lalalla","code":"00044","stock":200}]
+[
+    {
+        "id": 1,
+        "title": "remera",
+        "description": "remera lisa",
+        "price": 2500,
+        "thumbnail": "././lalalla",
+        "code": "00121",
+        "stock": 500
+    },
+    {
+        "id": 2,
+        "title": "pantalon",
+        "description": "pantalon largo",
+        "price": 1700,
+        "thumbnail": "././lalalla",
+        "code": "00044",
+        "stock": 200
+    }
+]

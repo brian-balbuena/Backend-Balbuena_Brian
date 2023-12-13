@@ -1,6 +1,6 @@
 import fs from 'fs';
 
-export class ProductManager {
+ class ProductManager {
     constructor(path) {
         this.path = path;
     };
@@ -49,8 +49,9 @@ export class ProductManager {
     async getProductById(id) {
 
         const data = await this.getProducts();
+        console.log(data, 'data product');
 
-        const getProductId = data.find(product => product.id === id);
+        const getProductId = data.find(product => product.id === +id);
 
         return getProductId;
     }
@@ -164,7 +165,9 @@ export class ProductManager {
             price: infoProduct.price,
             thumbnail: infoProduct.thumbnail,
             code: infoProduct.code,
-            stock: infoProduct.stock
+            stock: infoProduct.stock,
+            category: 'generico',
+            status: true
         };
 
         return newProduct;
@@ -201,6 +204,7 @@ export class ProductManager {
 
 };
   
+export default ProductManager;
 
 const test = async () => {
 
