@@ -94,7 +94,7 @@ import fs from 'fs';
 
     async deleteProduct(id){
 
-        const getIndex = await this.#getIndexProduct(id);
+        const getIndex = await this.#getIndexProduct(+id);
         if(getIndex !== -1){
 
             try {
@@ -112,7 +112,7 @@ import fs from 'fs';
                 return false;
             }
         }else{
-            console.error(`EL ${id} no existe`);
+            console.error(`EL ${+id} no existe`);
             return false;
         }
     };

@@ -52,7 +52,6 @@ productsRouter.put('/:pId', async (req, res) => {
     const { pId } = req.params;
     const infoNew = req.body;
 
-    console.log(infoNew, 'info nueva body')
     const productUpdate = await productManager.updateProduct(+pId, infoNew);
 
     if(!productUpdate){
@@ -62,8 +61,8 @@ productsRouter.put('/:pId', async (req, res) => {
 });
 
 productsRouter.delete('/:pId', async (req, res) => {
-    const { pid } = req.params;
-    const productDeleted = await productManager.deleteProduct(+pid);
+    const { pId } = req.params;
+    const productDeleted = await productManager.deleteProduct(+pId);
 
     if(!productDeleted){
         return res.status(404).send({massage: 'product not found'});
