@@ -139,7 +139,7 @@ import fs from 'fs';
     #validationData(info) {
         let validation = true;
 
-        if (!info.title || !info.description || !info.price || !info.thumbnail || !info.code || !info.stock) {
+        if (!info.title || !info.description || !info.price || !info.code || !info.stock) {
             validation = false;
         };
 
