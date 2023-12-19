@@ -1,0 +1,39 @@
+<h1>Nuevo Producto</h1>
+
+
+<div class="mb-3">
+
+</div>
+<form class="row g-3" method="post" action="api/products">
+    <div class="col-md-4">
+        <label for="title" class="form-label">titulo</label>
+        <input type="text" class="form-control" id="title" placeholder="title" name="title">
+    </div>
+<div class="col-md-4">
+        <label for="description" class="form-label">Descripción</label>
+        <input type="text" class="form-control" id="description" placeholder="description" name="description">
+    </div>
+    <div class="col-md-4">
+        <label for="price" class="form-label">Precio</label>
+        <input type="number" class="form-control" id="price" placeholder="price" name="price">
+    </div>
+    <div class="col-md-4">
+        <label for="code" class="form-label">Codigo</label>
+        <input type="number" class="form-control" id="code" placeholder="code" name="code">
+    </div>
+    <div class="col-md-4">
+        <label for="stock" class="form-label">Stock</label>
+        <input type="number" class="form-control" id="stock" placeholder="stock" name="stock">
+    </div>
+    <div class="col-md-4">
+        <label for="category" class="form-label">Categoria</label>
+        <input type="text" class="form-control" id="category" placeholder="category" name="category">
+    </div>
+
+<div class="col-12">
+    <button class="btn btn-primary" type="submit">Submit form</button>
+  </div>
+</form>
+
+<script src="/socket.io/socket.io.js"></script>
+<script src="js/index.js"></script>

@@ -1,0 +1,33 @@
+<h1>Borrar producto</h1>
+
+<form class="row g-3" id="deleteForm">
+    <div class="col-md-4">
+        <label for="Id" class="form-label">Id</label>
+        <input type="number" class="form-control" id="Id" placeholder="Id" name="Id">
+    </div>
+
+    <div class="col-12">
+        <button class="btn btn-primary" type="submit">Submit form</button>
+    </div>
+</form>
+
+
+<script src="/socket.io/socket.io.js"></script>
+<script src="js/index.js"></script>
+
+<script>
+
+
+document.getElementById('deleteForm').addEventListener('submit', function(event) {
+    event.preventDefault();
+
+    const id = document.getElementById('Id').value;
+
+    fetch('api/products/' + id, {
+        method: 'DELETE',
+        body: JSON.stringify({ Id: id })
+
+    }) 
+
+});
+</script>

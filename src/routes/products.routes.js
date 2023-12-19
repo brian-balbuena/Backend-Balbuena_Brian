@@ -39,8 +39,7 @@ productsRouter.get('/:pid', async (req, res) => {
 productsRouter.post('/', async (req, res) => {
     const infoProduct = req.body;
     const productAdd = await productManager.addProduct(infoProduct);
-
-    console.log(infoProduct, 'product body');
+    
     if(!productAdd){
         return res.status(400).send({message: 'error: product not added'});
     }

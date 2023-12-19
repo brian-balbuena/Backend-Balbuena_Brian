@@ -1,0 +1,17 @@
+<h1 class="d-flex justify-content-center bg-success-subtle">Productos </h1>
+<ul class="d-flex justify-content-around">
+    {{#each products}}
+    <li class="d-flex justify-content-center mb-3">
+        <div class="card" style="width: 18rem;">
+            <img src='{{thumbnail}}' class="card-img-top" alt="imagen producto">
+            <div class="card-body">
+                <h5 class="card-title">Titulo: {{title}}</h5>
+                <p>Codigo: {{code}}</p>
+                <p class="card-text">Descripción: {{description}}</p>
+                <p class="card-text">Stock: {{stock}}</p>
+                <p>${{price}}</p>
+            </div>
+        </div>
+    </li>
+    {{/each}}
+</ul>
