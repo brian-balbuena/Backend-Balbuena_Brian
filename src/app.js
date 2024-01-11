@@ -6,6 +6,7 @@ import productsRouter from './routes/products.routes.js';
 import cartsRouter from './routes/carts.routes.js';
 import viewRouters from './routes/views.routes.js';
 import ProductManager from './productManager.js';
+import mongoose from 'mongoose';
 
 const app = express();
 const PORT = 8080;
@@ -19,6 +20,7 @@ app.engine('handlebars', handlebars.engine());
 app.set('views', 'src/views');
 app.set('view engine', 'handlebars');
 
+mongoose.connect('mongodb+srv://brian:brian10674@ecommercemiplanta.kjf5njt.mongodb.net/ecommerce');
 
 app.use('/api/products', productsRouter);
 app.use('/api/carts', cartsRouter);
