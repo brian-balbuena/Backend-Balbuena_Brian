@@ -1,9 +1,6 @@
 const socket = io();
 
-
 const listContainer = document.getElementById('listContainer');
-
- 
 
 socket.on('productsRealtime', data => {
     while (listContainer.firstChild) {
@@ -60,3 +57,17 @@ socket.on('productsRealtime', data => {
     
 });
 
+socket.emit('user', user.value);
+/* const user = document.getElementById('user'); */
+/* const buttonLogin = document.getElementById('boton-enviar'); */
+
+/* buttonLogin.addEventListener("click", () => {
+    console.log('boton on')
+    socket.emit('user', user.value);
+}); */
+
+/* socket.on('userLogged', data => {
+    let userActive = data;
+
+    console.log(userActive);
+}); */

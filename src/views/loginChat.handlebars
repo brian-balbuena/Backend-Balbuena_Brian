@@ -1,0 +1,29 @@
+<h1 class="container-fluid text-center alert alert-success">Chat</h1>
+
+<div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <form id="formulario" class="formulario" method="get" action="chat" style="padding: 50px;">
+
+                    <div class="mb-3">
+                        <label for="user" class="form-label container-fluid text-center fs-3">Usuario</label>
+                        <input type="text" class="form-control" id="user" name="user" placeholder="usuario" required>
+                    </div>
+
+
+                    <button type="submit" class="btn btn-primary" id="boton-enviar" >Iniciar sesión</button>
+                </form>
+            </div>
+        </div>
+</div>
+
+<button id="abrirmodal" class="btn btn-primary" data-bs-target="#staticBackdrop" data-bs-toggle="modal" style="display: none">Open first modal </button>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            document.getElementById('abrirmodal').click();
+        });
+    </script>
+
+    <script src="/socket.io/socket.io.js"></script>
+    <script src="js/index.js"></script>
