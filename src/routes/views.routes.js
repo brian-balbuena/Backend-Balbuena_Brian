@@ -1,9 +1,15 @@
 import { Router } from "express";
-import ProductManager from "../productManager.js";
-import { productModel } from "../../dao/models/products.model.js";
+/* import ProductManager from "../dao/managersFs/productManager.js"; */
+import { productModel } from "../dao/models/products.model.js";
+import ProductManagerMongo from "../dao/managersMongo/productManagerMongo.js";
+import { cartModel } from "../dao/models/carts.model.js";
+import CartManagerMongo from "../dao/managersMongo/cartManagerMongo.js";
+/* import { productModel } from "../src/dao/models/products.model.js"; */
 
 const viewRouters = Router();
 
+const productManager = new ProductManagerMongo();
+const cartManager = new CartManagerMongo
 /* const productManager = new ProductManager('./db_Productos.json'); */
 
 viewRouters.get('/', async (req, res) =>  {
@@ -15,7 +21,6 @@ viewRouters.get('/', async (req, res) =>  {
 
     try {
         const products = await productModel.find();
-        console.log(products)
        return res.render('index', {products: products});
     } catch (error) {
         console.error(error);
@@ -71,5 +76,20 @@ viewRouters.get('/chat',  (req, res) => {
 
 });
 
+viewRouters.get('/products', async (req, res) => {
 
+    const { page } = req.query;
+    
+    const products = await productManager.getProduct(10, page);
+
+    res.render('products', products);
+})
+
+viewRouters.get('/carts/:cId', async (req, res) => {
+    const { cId } = req.params;
+
+   const productCart = await cartManager.getCart(cId);
+   res.render('cart', productCart)
+
+});
 export default viewRouters;

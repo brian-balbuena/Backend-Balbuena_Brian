@@ -1,0 +1,42 @@
+<h1 class="d-flex justify-content-center bg-success-subtle">Productos </h1>
+
+<section class="d-flex justify-content-center mb-3 flex-wrap" style="width: 90%; height: 100%; margin: auto;">
+
+    {{#each payload}}
+    <div class="card" style="width: 18rem; margin: 15px;">
+        <img src='{{thumbnail}}' class="card-img-top" alt="imagen producto">
+        <div class="card-body">
+            <h5 class="card-title">Titulo: {{title}}</h5>
+            <p>Codigo: {{code}}</p>
+            <p class="card-text">Descripción: {{description}}</p>
+            <p class="card-text">Stock: {{stock}}</p>
+            <p>${{price}}</p>
+
+            <div class="input-group mb-3" style="width: 55%;">
+                <button class="btn btn-outline-secondary" type="button" id="subtract" onclick="updateNumber(-1, `{{_id}}`)">-</button>
+                <input type="number" class="form-control" value="1"
+                    aria-label="Recipient's username" aria-describedby="button-addon2" id="quantity{{_id}}">
+                <button class="btn btn-outline-secondary" type="button" id="add" onclick="updateNumber(1, `{{_id}}`)">+</button>
+            </div>
+
+            <button type="button" class="btn btn-success" onclick="addCart(`{{_id}}`, `{{title}}`)"> Agregar al carrito </button>
+        </div>
+    </div>
+    {{/each}}
+
+</section>
+
+{{#if hasPrevPage}}
+<button type="button" class="btn btn-success"> <a
+        class="link-dark link-offset-2 link-underline-opacity-25 link-underline-opacity-100-hover"
+        href="/products?page= {{prevPage}}">Anterior</a></button>
+{{/if}}
+
+{{#if hasNextPage}}
+<button type="button" class="btn btn-success"> <a
+        class="link-dark link-offset-2 link-underline-opacity-25 link-underline-opacity-100-hover"
+        href="/products?page= {{nextPage}}">Siguiente</a></button>
+{{/if}}
+
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script src="js/product.js"></script>

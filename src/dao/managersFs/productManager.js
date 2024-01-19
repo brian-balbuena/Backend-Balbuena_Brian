@@ -1,4 +1,4 @@
-import fs from 'fs';
+/* import fs from 'fs';
 
  class ProductManager {
     constructor(path) {
@@ -213,7 +213,7 @@ import fs from 'fs';
 
 };
   
-export default ProductManager;
+export default ProductManager; */
 
 const test = async () => {
 

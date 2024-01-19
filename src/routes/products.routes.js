@@ -1,30 +1,32 @@
 import { Router } from "express";
-import ProductManager from "../productManager.js";
-import { productModel } from "../../dao/models/products.model.js";
+/* import ProductManager from "../dao/managersFs/productManager.js"; */
+import { productModel } from "../dao/models/products.model.js";
+import ProductManagerMongo from "../dao/managersMongo/productManagerMongo.js";
+/* import { productModel } from "../dao/models/products.model.js"; */
 
 const productsRouter = Router();
 
-const productManager = new ProductManager('./dao/db_Productos.json');
+/* const productManager = new ProductManager('./dao/db_Productos.json'); */
 
 productsRouter.get('/', async (req, res) => {
-    const { limit } = req.query;
+    const { limit = 10, page = 1, query = '', sort = '' } = req.query;
 
-    if(!limit){
+   /*  if(!limit){ */
         /* const products = await productManager.getProducts();
         res.send(products);
         return; */
 
-        try {
+     /*    try {
             const product = await productModel.find();
            return res.status(200).send({product})
         } catch (error) {
             console.error(error);
             return res.status(400).send({message: 'products not found'})
-        }
+        } */
 
-    }
+    /* } */
     
-    try {
+  /*   try {
         const product = await productModel.find();
         if( limit > product.length || limit == 0){
             return res.status(404).send({massage: 'product not found'});
@@ -36,9 +38,25 @@ productsRouter.get('/', async (req, res) => {
     } catch (error) {
         console.error(error);
        return res.status(400).send({message: 'products not found'})
-    }
+    } */
 
    
+    try {
+        const productManager = new ProductManagerMongo();
+        
+        const products = await productManager.getProduct(limit, page, query, sort);
+
+        if(products){
+            res.send(products)
+        }else{
+            res.status(400).send({message: 'product not found'})
+        }
+
+    } catch (error) {
+        console.log(error);
+        res.status(400).send({message: 'product not found'})
+    }
+
 });
 
 productsRouter.get('/:pid', async (req, res) => {

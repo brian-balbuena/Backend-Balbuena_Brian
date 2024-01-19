@@ -5,10 +5,11 @@ import { Server, Socket } from 'socket.io';
 import productsRouter from './routes/products.routes.js';
 import cartsRouter from './routes/carts.routes.js';
 import viewRouters from './routes/views.routes.js';
-import ProductManager from './productManager.js';
 import mongoose from 'mongoose';
-import { productModel } from '../dao/models/products.model.js';
-import { messageModel } from '../dao/models/messages.model.js';
+/* import { productModel } from './dao/models/products.model.js'; */
+import { productModel } from '../src/dao/models/products.model.js';
+import { messageModel } from '../src/dao/models/messages.model.js';
+
 
 const app = express();
 const PORT = 8080;
@@ -71,7 +72,6 @@ try {
     /* res.status(400).send({message: 'error saving mesage'}) */
 }
 };
-
 
 
 io.on('connect', async socket => {

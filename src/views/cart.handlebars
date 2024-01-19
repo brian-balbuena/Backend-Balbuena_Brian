@@ -1,0 +1,20 @@
+<h1 class="d-flex justify-content-center bg-success-subtle">Carrito </h1>
+
+<section class="d-flex justify-content-center mb-3 flex-wrap" style="width: 90%; height: 100%; margin: auto;">
+
+    {{#each products}}
+    <div class="card" style="width: 18rem; margin: 15px;">
+        <img src='{{idProduct.thumbnail}}' class="card-img-top" alt="imagen producto">
+        <div class="card-body">
+            <h5 class="card-title">Titulo: {{idProduct.title}}</h5>
+            <p>Codigo: {{idProduct.code}}</p>
+            <p class="card-text">Descripción: {{idProduct.description}}</p>
+            <p class="card-text">Stock: {{idProduct.stock}}</p>
+            <p>${{idProduct.price}}</p>
+            <p>Cantidad X{{quantity}}</p>
+        </div>
+    </div>
+    {{/each}}
+
+</section>
+
