@@ -1,0 +1,59 @@
+.registro {
+    position: absolute;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 100%;
+    z-index: 1000;
+    backdrop-filter: blur(10px);
+}
+
+.frente {
+    position: absolute;
+    backface-visibility: hidden;
+    transition: all 1s ease;
+    width: 30%;
+    height: 50%;
+    color: #575757;
+    background-color: #F7F5EB;
+    backdrop-filter: blur(40px);
+    border-radius: 5px;
+}
+
+#frente-foto-img {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    border-radius: 5px 0 0 5px;
+  
+}
+
+.login {
+    position: relative;
+    width: 50%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+    align-items: center;
+    text-align: center;
+
+}
+#login {
+    width: 120px;
+}
+
+.form-login {
+    margin: 10px;
+    border-top: none;
+    border-left: none;
+    border-right: none;
+    border-bottom: solid 2px black;
+    background-color: #F7F5EB;
+}
+
+.form-login:focus {
+    background-color: #DAE2B6;
+ 
+}

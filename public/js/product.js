@@ -75,6 +75,7 @@ async function addCart(id, title) {
        Toast.fire({
          icon: "error",
          title: `${title} X${quantity} no se agrego`
+         
        });
    }
 

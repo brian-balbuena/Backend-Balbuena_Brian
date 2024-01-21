@@ -77,12 +77,28 @@ viewRouters.get('/chat',  (req, res) => {
 });
 
 viewRouters.get('/products', async (req, res) => {
+    const { limit = 10, page = 1, query = '', sort = '' } = req.query;
 
-    const { page } = req.query;
     
-    const products = await productManager.getProduct(10, page);
+    /* const products = await productManager.getProduct(10, page);
 
-    res.render('products', products);
+    res.render('products', products); */
+
+    try {
+        const productManager = new ProductManagerMongo();
+        
+        const products = await productManager.getProduct(limit, page, query, sort);
+
+        if(products){
+            res.render('products', products);
+        }else{
+            res.status(400).send({message: 'product not found'})
+        }
+
+    } catch (error) {
+        console.log(error);
+        res.status(400).send({message: 'product not found'})
+    }
 })
 
 viewRouters.get('/carts/:cId', async (req, res) => {
@@ -91,5 +107,10 @@ viewRouters.get('/carts/:cId', async (req, res) => {
    const productCart = await cartManager.getCart(cId);
    res.render('cart', productCart)
 
+});
+
+viewRouters.get('/login', (req, res) => {
+
+    res.render('login');
 });
 export default viewRouters;

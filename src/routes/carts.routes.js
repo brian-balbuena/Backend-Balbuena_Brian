@@ -1,6 +1,8 @@
 import { Router } from "express";
 /* import CartManager from "../dao/managersFs/cartManager.js"; */
 import { cartModel } from "../dao/models/carts.model.js";
+import mongoose from "mongoose";
+import { productModel } from "../dao/models/products.model.js";
 
 
 const cartsRouter = Router();
@@ -75,12 +77,24 @@ cartsRouter.post('/:cId/product/:pId', async (req, res) => {
     try {
         const cart = await cartModel.findOne({ _id: cId });
 
-        if (cart.products.length === 0) {
-            cart.products.push({ idProduct: pId });
+        if(!cart){
+           return res.status(400).send({ message: 'Product not added' });
         }
 
-        const productExists =  cart.products.find(p => p.idProduct.toString() === pId); /* products: ipProduct: pId); */
- 
+        if (cart.products.length === 0) {
+            cart.products.push({ idProduct: pId }, {quantity: quantity});
+
+            await cart.save();
+            return res.status(200).send({ message: 'Product added to cart' })
+        }
+
+        const productId = await productModel.findOne({_id: pId});
+        if(!productId){
+            return res.status(400).send({ message: 'Product not added' });
+         }
+
+        const productExists =  cart.products.find(p => p.idProduct.toString() === pId); 
+        
         if (productExists != undefined) {
             
             const productoSuma = cart.products.find(product => product.idProduct.toString() === pId);
@@ -94,7 +108,6 @@ cartsRouter.post('/:cId/product/:pId', async (req, res) => {
         }
  
         await cart.save();
-
         res.status(200).send({ message: 'Product added to cart' })
     } catch (error) {
         console.error(error);
@@ -132,17 +145,20 @@ cartsRouter.put('/:cId/product/:pId', async (req, res) => {
     const { quantity } = req.body;
     
     if(!quantity){
+        console.log('1')
         return res.status(400).send({message: 'Not found'})
     }
     try {
     
         const cart = await cartModel.findOne({_id: cId});
         if(!cart){
+            console.log('2')
             return res.status(400).send({message: 'Not found'})
         }
 
         const product = cart.products.find(p => p.idProduct.toString() === pId);
         if(!product){
+            console.log('3')
             return res.status(400).send({message: 'Not found'})
         }
 
@@ -178,21 +194,35 @@ cartsRouter.delete('/:cId', async (req, res) => {
     }
 });
 
-cartsRouter.delete('/:cId/product/:pId', async (req, resp) => {
+cartsRouter.delete('/:cId/product/:pId', async (req, res) => {
     const { cId, pId } = req.params;
+    
 
     try {
-        const cartDelete = await cartModel.updateOne({ _id: cId }, {
-            $pull: { products: {idProduct: pId} }
+  
+        if (!/^[0-9a-fA-F]{24}$/.test(pId) ||  !/^[0-9a-fA-F]{24}$/.test(cId)) {
+            return res.status(400).send({ message: 'Invalid format' });
+        };
+
+        const objetCartId =  new mongoose.Types.ObjectId(cId);
+        const objetProductId =  new mongoose.Types.ObjectId(pId);
+  
+
+        
+        const cartDelete = await cartModel.updateOne({ _id: objetCartId }, {
+            
+            $pull: { products: {idProduct: objetProductId} }
         });
 
         if (cartDelete.modifiedCount > 0) {
             res.status(200).send({ message: 'Product deleted' });
         } else {
+            console.log('1')
             res.status(400).send({ message: 'Could not deleted product' });
         }
 
     } catch (error) {
+        console.log('2')
         console.error(error);
         res.status(400).send({ message: 'Could not deleted product' });
     }

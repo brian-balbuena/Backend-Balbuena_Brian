@@ -5,15 +5,28 @@ import { Server, Socket } from 'socket.io';
 import productsRouter from './routes/products.routes.js';
 import cartsRouter from './routes/carts.routes.js';
 import viewRouters from './routes/views.routes.js';
+import sessionRoutes from './routes/session.routes.js';
 import mongoose from 'mongoose';
 /* import { productModel } from './dao/models/products.model.js'; */
 import { productModel } from '../src/dao/models/products.model.js';
 import { messageModel } from '../src/dao/models/messages.model.js';
+import session from 'express-session';
+import MongoStore from 'connect-mongo';
+
 
 
 const app = express();
 const PORT = 8080;
 
+app.use(session({
+    secret: 'c0d3rh0us3',
+    store: MongoStore.create({
+        mongoUrl: 'mongodb+srv://brian:brian10674@ecommercemiplanta.kjf5njt.mongodb.net/ecommerce',
+        ttl: 20
+    }),
+    resave: true,
+    saveUninitialized: true
+}));
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
@@ -33,6 +46,7 @@ mongoose.connect('mongodb+srv://brian:brian10674@ecommercemiplanta.kjf5njt.mongo
 
 app.use('/api/products', productsRouter);
 app.use('/api/carts', cartsRouter);
+app.use('/api/session', sessionRoutes);
 app.use('/', viewRouters);
 
 
