@@ -21,8 +21,7 @@ const PORT = 8080;
 app.use(session({
     secret: 'c0d3rh0us3',
     store: MongoStore.create({
-        mongoUrl: 'mongodb+srv://brian:brian10674@ecommercemiplanta.kjf5njt.mongodb.net/ecommerce',
-        ttl: 20
+        mongoUrl: 'mongodb+srv://brian:brian10674@ecommercemiplanta.kjf5njt.mongodb.net/ecommerce'
     }),
     resave: true,
     saveUninitialized: true

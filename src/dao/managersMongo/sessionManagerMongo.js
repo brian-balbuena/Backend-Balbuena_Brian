@@ -5,7 +5,7 @@ class SessionManagerMongo {
     async register (first_name, last_name, email, age, password){
 
         try {
-            await userModel.create({
+           const user =  await userModel.create({
                 first_name,
                 last_name,
                 email,
@@ -14,7 +14,7 @@ class SessionManagerMongo {
                 password
             })
 
-            return {status: 'ok', message: 'User added'};
+            return {status: 'ok', message: 'User added', user: user};
         } catch (error) {
             console.error(error);
             return { status:'error', message: error}

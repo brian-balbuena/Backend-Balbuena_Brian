@@ -9,7 +9,8 @@
     backdrop-filter: blur(10px);
 }
 
-.frente {
+.frente,
+.reversa {
     position: absolute;
     backface-visibility: hidden;
     transition: all 1s ease;
@@ -27,6 +28,15 @@
     height: 100%;
     border-radius: 5px 0 0 5px;
   
+}
+
+.registro-foto {
+    position: relative;
+    width: 50%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    flex-direction: column;
 }
 
 .login {

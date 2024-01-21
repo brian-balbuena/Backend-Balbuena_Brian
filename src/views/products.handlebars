@@ -1,8 +1,15 @@
-<h1 class="d-flex justify-content-center bg-success-subtle">Productos </h1>
+
+<section class="d-flex justify-content-center bg-success-subtle flex-column" id="headerProduct">
+    <h1 class="d-flex justify-content-center bg-success-subtle ">Productos</h1>
+    <div style="padding-left: 20px;">
+        <h3> Bienvenid@ {{firstName}} {{lastName}}</h3>
+        <button type="button" class="btn btn-secondary" id="logoutButton">Cerrar sesion</button>
+    </div>
+</section>
 
 <section class="d-flex justify-content-center mb-3 flex-wrap" style="width: 90%; height: 100%; margin: auto;">
 
-    {{#each payload}}
+    {{#each products.payload}}
     <div class="card" style="width: 18rem; margin: 15px;">
         <img src='{{thumbnail}}' class="card-img-top" alt="imagen producto">
         <div class="card-body">
@@ -26,17 +33,25 @@
 
 </section>
 
-{{#if hasPrevPage}}
+{{#if products.hasPrevPage}}
 <button type="button" class="btn btn-success"> <a
         class="link-dark link-offset-2 link-underline-opacity-25 link-underline-opacity-100-hover"
-        href="/products?page= {{prevPage}}">Anterior</a></button>
+        href="/products?page= {{products.prevPage}}">Anterior</a></button>
 {{/if}}
 
-{{#if hasNextPage}}
+{{#if products.hasNextPage}}
 <button type="button" class="btn btn-success"> <a
         class="link-dark link-offset-2 link-underline-opacity-25 link-underline-opacity-100-hover"
-        href="/products?page= {{nextPage}}">Siguiente</a></button>
+        href="/products?page= {{products.nextPage}}">Siguiente</a></button>
 {{/if}}
+
+<script>
+   const userFirstName = "{{firstName}}";
+   const userLastName = "{{lastName}}"
+   const userRole = "{{role}}"
+</script>
 
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <script src="js/product.js"></script>
+
+
