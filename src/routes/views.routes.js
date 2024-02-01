@@ -110,10 +110,16 @@ viewRouters.get('/login', checkExistingUser, (req, res) => {
 
     res.render('login');
 });
+viewRouters.get('/faillogin', (req, res) => {
+    res.render('failLogin');
+})
 
 viewRouters.get('/register', checkExistingUser, (req, res) => {
 
     res.render('register');
 });
+viewRouters.get('/failregister', (req, res) => {
+    res.render('failRegister');
+})
 
 export default viewRouters;

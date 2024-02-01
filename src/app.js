@@ -12,6 +12,9 @@ import { productModel } from '../src/dao/models/products.model.js';
 import { messageModel } from '../src/dao/models/messages.model.js';
 import session from 'express-session';
 import MongoStore from 'connect-mongo';
+import passport from 'passport';
+import initializePassport from './config/passport.config.js';
+
 
 
 
@@ -26,6 +29,10 @@ app.use(session({
     resave: true,
     saveUninitialized: true
 }));
+
+initializePassport();
+app.use(passport.initialize());
+app.use(passport.session());
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));

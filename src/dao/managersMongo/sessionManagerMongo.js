@@ -1,3 +1,4 @@
+import { createHash, isValidPassword } from "../../utils/bcrypt.js";
 import { userModel } from "../models/user.model.js";
 
 class SessionManagerMongo {
@@ -11,7 +12,7 @@ class SessionManagerMongo {
                 email,
                 age,
                 email,
-                password
+                password: createHash(password)
             })
 
             return {status: 'ok', message: 'User added', user: user};
@@ -40,7 +41,7 @@ class SessionManagerMongo {
                 return response;
             }
 
-            if(user.password !== password){
+            if(!isValidPassword(user, password)){
                 response.status = "error"
                 response.password = "error"
                 return response;
