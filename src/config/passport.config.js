@@ -73,7 +73,7 @@ const initializePassport = () => {
                         first_name: profile._json.name.split(' ')[0],
                         last_name: profile._json.name.split(' ')[1],
                         age: 18,
-                        email: profile._json.email,
+                        email: (profile._json.email === null) ? 'emailPrivado@privado' : profile._json.email,
                         password: 'github'
                     };
 

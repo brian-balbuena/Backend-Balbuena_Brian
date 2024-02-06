@@ -7,7 +7,15 @@ const sessionRoutes = Router();
 
 sessionRoutes.post('/register', passport.authenticate('register', { failureRedirect: '/failregister' }), async (req, res) => {
 
-    res.status(201).send({ message: 'User to register' });
+    req.session.user = {
+        first_name: req.user.first_name,
+        last_name: req.user.last_name,
+        age: req.user.age,
+        email: req.user.email
+    };
+    res.redirect('/products');
+    /* res.status(201).send({ message: 'User to register' }); */
+
 
 
     /*     const { first_name, last_name, email, age, password } = req.body;
@@ -28,12 +36,12 @@ sessionRoutes.post('/register', passport.authenticate('register', { failureRedir
 });
 
 
-sessionRoutes.post('/login', passport.authenticate('login', { failureRedirect: "/faillogin" }) , async (req, res) => {
-   
-    if(!req.user){
-        return res.status(400).send({ message: 'Error witch credentials'});
+sessionRoutes.post('/login', passport.authenticate('login', { failureRedirect: "/faillogin" }), async (req, res) => {
+
+    if (!req.user) {
+        return res.status(400).send({ message: 'Error witch credentials' });
     }
-    
+
     req.session.user = {
         first_name: req.user.first_name,
         last_name: req.user.last_name,
@@ -41,9 +49,9 @@ sessionRoutes.post('/login', passport.authenticate('login', { failureRedirect: "
         email: req.user.email
     };
     res.redirect('/products');
-    
-   
-   
+
+
+
     /*  const { email, password } = req.body;
 
     try {
@@ -65,11 +73,11 @@ sessionRoutes.post('/login', passport.authenticate('login', { failureRedirect: "
 
 });
 
-sessionRoutes.get('/github', passport.authenticate('github', { scope: ["user:email"]}) ,(req, res) => {
+sessionRoutes.get('/github', passport.authenticate('github', { scope: ["user:email"] }), (req, res) => {
 
 });
 
-sessionRoutes.get('/githubcallback', passport.authenticate('github', {failureRedirect: '/login'}), (req, res) => {
+sessionRoutes.get('/githubcallback', passport.authenticate('github', { failureRedirect: '/login' }), (req, res) => {
 
     req.session.user = req.user;
     res.redirect('/products')
