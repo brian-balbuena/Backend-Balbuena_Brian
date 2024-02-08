@@ -1,6 +1,6 @@
 import mongoose from "mongoose";
 
-const userCollection = 'user'; 
+const userCollection = 'user';
 
 const userSchema = mongoose.Schema({
     first_name: {
@@ -24,8 +24,12 @@ const userSchema = mongoose.Schema({
         type: String,
         required: true
     },
+    cart: {
+        type: mongoose.Schema.ObjectId,
+        ref: 'carts'
+    },
     role: {
-        type : String,
+        type: String,
         default: "usuario",
         required: true
     }

@@ -122,4 +122,11 @@ viewRouters.get('/failregister', (req, res) => {
     res.render('failRegister');
 })
 
+viewRouters.get('/current', checkAuth, (req, res) => {
+
+    const { user } = req.session;
+
+    res.render('current', user);
+});
+
 export default viewRouters;
