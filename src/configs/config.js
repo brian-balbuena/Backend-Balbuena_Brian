@@ -1,0 +1,17 @@
+import dotenv from "dotenv";
+
+export const getVariables = (option) => {
+
+    const enviroment = option.opts().mode;
+
+
+    dotenv.config({
+        path: enviroment === 'production' ? 'src/configs/.env.production' : 'src/configs/.env.development'
+    });
+
+    return {
+        port : process.env.PORT,
+        mongoURL: process.env.mongoURL,
+        secret: process.env.secret
+    }
+};

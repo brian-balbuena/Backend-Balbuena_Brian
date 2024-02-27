@@ -7,24 +7,28 @@ import cartsRouter from './routes/carts.routes.js';
 import viewRouters from './routes/views.routes.js';
 import sessionRoutes from './routes/session.routes.js';
 import mongoose from 'mongoose';
-/* import { productModel } from './dao/models/products.model.js'; */
+
 import { productModel } from '../src/dao/models/products.model.js';
 import { messageModel } from '../src/dao/models/messages.model.js';
 import session from 'express-session';
 import MongoStore from 'connect-mongo';
 import passport from 'passport';
-import initializePassport from './config/passport.config.js';
+import initializePassport from './configs/passport.config.js';
+import { Command } from 'commander'
+import { getVariables } from './configs/config.js';
 
-
-
+const program = new Command();
+program.option('--mode <mode>', 'Modo de trabajo', 'production');
+const option = program.parse();
+const { port , mongoURL, secret } = getVariables(option);
 
 const app = express();
-const PORT = 8080;
+/* const PORT = 8080; */
 
 app.use(session({
-    secret: 'c0d3rh0us3',
+    secret: secret,
     store: MongoStore.create({
-        mongoUrl: 'mongodb+srv://brian:brian10674@ecommercemiplanta.kjf5njt.mongodb.net/ecommerce'
+        mongoUrl: mongoURL
     }),
     resave: true,
     saveUninitialized: true
@@ -56,8 +60,8 @@ app.use('/api/session', sessionRoutes);
 app.use('/', viewRouters);
 
 
-const httpServer = app.listen(PORT, () => {
-    console.log(`Seervidor en puerto ${PORT}`);
+const httpServer = app.listen(port, () => {
+    console.log(`Seervidor en puerto ${port}`);
 });
 
 const io = new Server(httpServer);
@@ -83,14 +87,14 @@ async function getMessages() {
     }
 };
 
-async function postMessages(message){
-try {
-    await messageModel.create(message);
-    /* res.status(201).send({message: 'saved message'}) */
-} catch (error) {
-    console.error(error);
-    /* res.status(400).send({message: 'error saving mesage'}) */
-}
+async function postMessages(message) {
+    try {
+        await messageModel.create(message);
+        /* res.status(201).send({message: 'saved message'}) */
+    } catch (error) {
+        console.error(error);
+        /* res.status(400).send({message: 'error saving mesage'}) */
+    }
 };
 
 
@@ -110,19 +114,19 @@ io.on('connect', async socket => {
         console.error('Error al manejar la conexión de socket:', error);
     }
 
-    
+
 
     socket.on('userMessage', async data => {
-       try {
-        const saveMessage = await postMessages(data);
-        const messages = await getMessages();
-        io.emit('setMessages', messages)
+        try {
+            const saveMessage = await postMessages(data);
+            const messages = await getMessages();
+            io.emit('setMessages', messages)
 
-       } catch (error) {
-        console.error(error);
-        io.emit('setMessages', 'NOT FOUND')
-       }
-        
+        } catch (error) {
+            console.error(error);
+            io.emit('setMessages', 'NOT FOUND')
+        }
+
     });
 });
 
