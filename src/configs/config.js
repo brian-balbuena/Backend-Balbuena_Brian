@@ -3,8 +3,7 @@ import dotenv from "dotenv";
 export const getVariables = (option) => {
 
     const enviroment = option.opts().mode;
-
-
+    
     dotenv.config({
         path: enviroment === 'production' ? 'src/configs/.env.production' : 'src/configs/.env.development'
     });

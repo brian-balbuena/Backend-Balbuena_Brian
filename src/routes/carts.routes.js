@@ -1,24 +1,26 @@
 import { Router } from "express";
-import { addProductToCartApi, createCartApi, deleteCartApi, deleteProductToCartApi, editCartApi, editProductToCartApi, getCartApi, getCartIdApi } from "../controllers/cart.controller.js";
+import { addProductToCartApi, createCartApi, deleteCartApi, deleteProductToCartApi, editCartApi, editProductToCartApi, getCartApi, getCartIdApi, purchase } from "../controllers/cart.controller.js";
+import { checkAuth, checkExistingUser, checkRoleUser } from "../middlewares/auth.js";
 
 
 const cartsRouter = Router();
 
 
-cartsRouter.get('/', getCartApi);
-cartsRouter.get('/:cId', getCartIdApi);
+cartsRouter.get('/',checkRoleUser, getCartApi);
+cartsRouter.get('/:cId',checkRoleUser, getCartIdApi);
 
 
-cartsRouter.post('/', createCartApi);
-cartsRouter.post('/:cId/product/:pId', addProductToCartApi);
+cartsRouter.post('/',checkRoleUser, createCartApi);
+cartsRouter.post('/:cId/product/:pId',checkRoleUser, addProductToCartApi);
 
 
-cartsRouter.put('/:cId', editCartApi);
-cartsRouter.put('/:cId/product/:pId', editProductToCartApi);
+cartsRouter.put('/:cId',checkRoleUser, editCartApi);
+cartsRouter.put('/:cId/product/:pId',checkRoleUser, editProductToCartApi);
 
 
-cartsRouter.delete('/:cId', deleteCartApi);
-cartsRouter.delete('/:cId/product/:pId', deleteProductToCartApi);
+cartsRouter.delete('/:cId',checkRoleUser, deleteCartApi);
+cartsRouter.delete('/:cId/product/:pId',checkRoleUser, deleteProductToCartApi);
 
+cartsRouter.get('/:cId/purchase',checkRoleUser,  purchase);
 
 export default cartsRouter;

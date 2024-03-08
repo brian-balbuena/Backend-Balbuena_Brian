@@ -1,6 +1,12 @@
+import CartDTO from "../dao/dtos/carts.dto.js";
+import TicketDTO from "../dao/dtos/ticket.dto.js";
+import UserDTO from "../dao/dtos/user.dto.js";
 import ServiceCart from "../dao/servicesMongo/servicecart.js";
+import { updateStockProduct } from "./stock.controller.js";
+import { createTicket } from "./ticket.controller.js";
 
 const serviceCart = new ServiceCart();
+const cartDto = new CartDTO();
 
 export const getCartId = async (req, res) => {
 
@@ -90,4 +96,73 @@ export const deleteProductToCartApi = async (req, res) => {
 
     return res.status(deleteProduct.status).send(deleteProduct.send);
 
+};
+
+export const purchase = async (req, res) => {
+
+    const { cId } = req.params;
+    const { user } = req.session;
+    const userDTO = new UserDTO(user);
+
+    const checkStock = await serviceCart.checkStockProductToCartService(cId);
+
+    if (checkStock.stock.length === 0) {
+        const productDto = await cartDto.cartPurchaseDTO(checkStock.outOfStock, cId);
+        const { id, ...outOfStock } = productDto;
+
+        res.render('failPurchaseStock', { outOfStock: outOfStock, id: id, firstName: userDTO.first_name, lastName: userDTO.last_name, role: userDTO.role, });
+    } else {
+
+        const ticket = await createTicket(req, res, checkStock.stock);
+
+        if (ticket.status != 201) {
+            res.render('failPurchase', { firstName: userDTO.first_name, lastName: userDTO.last_name, role: userDTO.role, });
+        } else {
+
+            checkStock.stock.forEach(async product => {
+                const stock = product.STOCK - product.QUANTITY;
+                const newStock = {
+                    stock: stock
+                };
+
+                const updateStock = await updateStockProduct(product.ID, newStock);
+                /*   FALTARIA MANEJAR EL ERROR  AL EDITAR STOCK */
+            })
+
+            const empty = await emptyCart(cId);
+           
+            checkStock.outOfStock.forEach(async product => {
+
+                const editCart = await editCartPurchase(cId, product.ID, product.QUANTITY);
+            })
+            
+
+            const ticketDTO = new TicketDTO(ticket.ticket.code, ticket.ticket.amount, ticket.ticket.purchaser, ticket.ticket.purchase_datetime)
+            res.render('ticket', {id: cId, firstName: userDTO.first_name, lastName: userDTO.last_name, role: userDTO.role, ticketDTO });
+
+        }
+    }
+
+
+};
+
+const emptyCart = async (id) => {
+
+    const deleteCart = await serviceCart.deleteCartService(id);
+
+    return {
+        status: deleteCart.status,
+        send: deleteCart.send
+    };
+};
+
+const editCartPurchase = async (cId, pId,  quantity) => {
+
+
+    const addProduct = await serviceCart.addProductToCartService(cId, pId, quantity);
+
+    return {
+        status: addProduct.status,
+        send: addProduct.send
+    };
 };

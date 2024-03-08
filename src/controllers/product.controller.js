@@ -1,9 +1,11 @@
+import UserDTO from "../dao/dtos/user.dto.js";
 import ServiceProduct from "../dao/servicesMongo/serviceproduct.js";
 
 
 export const getProduct = async (req, res) => {
     const { limit = 10, page = 1, query = '', sort = '' } = req.query;
     const { user } = req.session;
+    const userDTO = new UserDTO(user);
 
     try {
         const serviceProduct = new ServiceProduct();
@@ -11,7 +13,7 @@ export const getProduct = async (req, res) => {
         const products = await serviceProduct.getProductService(limit, page, query, sort);
 
         if (products) {
-            res.render('products', { products, firstName: user.first_name, lastName: user.last_name, role: user.role });
+            res.render('products', { products, firstName: userDTO.first_name, lastName: userDTO.last_name, role: userDTO.role });
         } else {
             res.status(400).send({ message: 'product not found' })
         }
@@ -26,6 +28,9 @@ export const getProduct = async (req, res) => {
 export const getApiProduct = async (req, res) => {
 
     const { limit = 10, page = 1, query = '', sort = '' } = req.query;
+    const { user } = req.session;
+    const userDTO = new UserDTO(user);
+    
 
     try {
         const serviceProduct = new ServiceProduct();
@@ -33,7 +38,7 @@ export const getApiProduct = async (req, res) => {
         const products = await serviceProduct.getProductService(limit, page, query, sort);
 
         if (products) {
-            res.send(products)
+            res.render('products', { products, firstName: userDTO.first_name, lastName: userDTO.last_name, role: userDTO.role });
         } else {
             res.status(400).send({ message: 'product not found' })
         }

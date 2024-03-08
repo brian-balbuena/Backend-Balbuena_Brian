@@ -1,10 +1,15 @@
+import UserDTO from "../dao/dtos/user.dto.js";
+
+
+
 export const sessionLog = (req, res) => {
 
     req.session.user = {
         first_name: req.user.first_name,
         last_name: req.user.last_name,
         age: req.user.age,
-        email: req.user.email
+        email: req.user.email,
+        role: req.user.role
     };
 
     if(req.session.user){
@@ -31,4 +36,10 @@ export const logoutSession = async (req, res) => {
     } catch (error) {
         res.status(400).send({ error });
     }
+};
+
+export const current = (req, res) => {
+    const { user } = req.session;
+    const userDTO = new UserDTO(user);
+    res.render('current', userDTO);
 };

@@ -1,20 +1,11 @@
 
 
-/* BUSCAR LA FORMA DE QUE NO SE EJECUTE CADA VEZ QUE SE REACARGA, SINO SOLO LA PRIMERA VEZ */
-/* window.onload = () => {
- 
-      Swal.fire({
-         title: `Bienvenid@ ${userFirstName} ${userLastName}`,
-         icon: "success",
-         showConfirmButton: false,
-         timer: 2500
-      });
-     
-} */
+
 
 const headerPage = document.getElementById('headerProduct');
 if(userRole === 'admin'){
    headerPage.className = "d-flex justify-content-center bg-danger flex-column";
+
 };
 
 function updateNumber(value, id) {
@@ -28,6 +19,40 @@ function updateNumber(value, id) {
    numberInput.value = newNumber;
 }
 
+
+/* async function editProduct(id) {
+   try {
+ 
+console.log('id', id)
+      const editProduct = await fetch(`http://localhost:8080/api/products/${id}`, {
+         body: JSON.stringify({
+            quantity: quantity
+         }),
+         method: 'put',
+         headers: {
+            'Content-Type': 'application/json'
+         }
+
+      });
+   } catch (error) {
+      console.error(error);
+      const Toast = Swal.mixin({
+         toast: true,
+         position: "top-end",
+         showConfirmButton: false,
+         timer: 2000,
+         didOpen: (toast) => {
+            toast.onmouseenter = Swal.stopTimer;
+            toast.onmouseleave = Swal.resumeTimer;
+         }
+      });
+      Toast.fire({
+         icon: "error",
+         title: `no se pudo acceder`
+
+      });
+   }
+} */
 
 async function addCart(id, title) {
 

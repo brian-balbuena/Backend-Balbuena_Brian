@@ -1,6 +1,7 @@
 <section class="d-flex justify-content-center bg-success-subtle flex-column" id="headerProduct">
     <h1 class="d-flex justify-content-center bg-success-subtle ">Productos</h1>
-    <div class="d-flex container-fluid justify-content-between align-items-center" {{!-- style="padding-left: 20px;" --}}>
+    <div class="d-flex container-fluid justify-content-between align-items-center" {{!-- style="padding-left: 20px;"
+        --}}>
         <div style="padding-left: 20px;" class="d-flex flex-column align-items-center">
             <a href="/current" style="color: black;">
                 <svg xmlns="http://www.w3.org/2000/svg" width="50" height="50" fill="currentColor"
@@ -30,17 +31,22 @@
             <p class="card-text">Stock: {{stock}}</p>
             <p>${{price}}</p>
 
-            <div class="input-group mb-3" style="width: 55%;">
-                <button class="btn btn-outline-secondary" type="button" id="subtract"
-                    onclick="updateNumber(-1, `{{_id}}`)">-</button>
-                <input type="number" class="form-control" value="1" aria-label="Recipient's username"
-                    aria-describedby="button-addon2" id="quantity{{_id}}">
-                <button class="btn btn-outline-secondary" type="button" id="add"
-                    onclick="updateNumber(1, `{{_id}}`)">+</button>
-            </div>
+            <section id="buttonAdd">
+                <div class="input-group mb-3" style="width: 55%;">
+                    <button class="btn btn-outline-secondary" type="button" id="subtract"
+                        onclick="updateNumber(-1, `{{_id}}`)">-</button>
+                    <input type="number" class="form-control" value="1" aria-label="Recipient's username"
+                        aria-describedby="button-addon2" id="quantity{{_id}}">
+                    <button class="btn btn-outline-secondary" type="button" id="add"
+                        onclick="updateNumber(1, `{{_id}}`)">+</button>
+                </div>
 
-            <button type="button" class="btn btn-success" onclick="addCart(`{{_id}}`, `{{title}}`)"> Agregar al carrito
-            </button>
+                <button type="button"  class=" btn btn-success" onclick="addCart(`{{_id}}`, `{{title}}`)">
+                    Agregar al carrito
+                </button>
+            </section>
+            {{!-- <button type="button" class="btn btn-success" onclick="editProduct(`{{_id}}`)"> Editar producto
+            </button> --}}
         </div>
     </div>
     {{/each}}

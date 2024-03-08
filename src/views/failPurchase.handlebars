@@ -1,5 +1,5 @@
 <section class="d-flex justify-content-center bg-success-subtle flex-column" id="headerProduct">
-    <h1 class="d-flex justify-content-center bg-success-subtle ">Borrar Producto</h1>
+    <h1 class="d-flex justify-content-center bg-success-subtle ">Productos</h1>
     <div class="d-flex container-fluid justify-content-between align-items-center" {{!-- style="padding-left: 20px;"
         --}}>
         <div style="padding-left: 20px;" class="d-flex flex-column align-items-center">
@@ -19,34 +19,31 @@
     </div>
 </section>
 
-<form class="row g-3" id="deleteForm">
-    <div class="col-md-4">
-        <label for="Id" class="form-label">Id</label>
-        <input type="number" class="form-control" id="Id" placeholder="Id" name="Id">
-    </div>
-
-    <div class="col-12">
-        <button class="btn btn-primary" type="submit">Submit form</button>
-    </div>
-</form>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
 
-<script src="/socket.io/socket.io.js"></script>
-<script src="js/index.js"></script>
 
 <script>
 
+    window.addEventListener('load', function () {
 
-document.getElementById('deleteForm').addEventListener('submit', function(event) {
-    event.preventDefault();
+        Swal.fire({
+            position: 'center',
+            icon: 'error',
+            title: "Oops!",
+            text: "algo salio mal",
+            showCancelButton: true,
+            allowOutsideClick: false,
+            confirmButtonText: 'Volver al carrito',
+            cancelButtonText: 'Volver a pagina principal'
+        }).then((result) => {
+            if (result.isConfirmed) {
+              window.location.href = "/carts/{{id}}";
+            } else {
+                window.location.href = "/products";
+            }
+        })
+    });
 
-    const id = document.getElementById('Id').value;
 
-    fetch('api/products/' + id, {
-        method: 'DELETE',
-        body: JSON.stringify({ Id: id })
-
-    }) 
-
-});
 </script>

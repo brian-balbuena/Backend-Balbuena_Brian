@@ -52,7 +52,8 @@ app.engine('handlebars', hbs.engine);
 app.set('views', 'src/views');
 app.set('view engine', 'handlebars');
 
-mongoose.connect('mongodb+srv://brian:brian10674@ecommercemiplanta.kjf5njt.mongodb.net/ecommerce');
+    /* CAMBIAR POR MONGIO URL Y PROBAR  */
+mongoose.connect(mongoURL);
 
 app.use('/api/products', productsRouter);
 app.use('/api/carts', cartsRouter);

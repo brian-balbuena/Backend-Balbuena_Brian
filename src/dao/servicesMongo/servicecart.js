@@ -176,6 +176,48 @@ class ServiceCart {
             return { status: (400), error: error, send: ({ message: 'Could not deleted product' }) };
         }
     };
+
+    async checkStockProductToCartService(cId) {
+
+        let outOfStock = [];
+        let stock = [];
+        const products = await this.getCartIdService(cId);
+        const { send } = products;
+
+
+        send.forEach(product => {
+
+            const { idProduct, quantity, } = product;
+
+            if (quantity <= idProduct.stock) {
+
+                let product = {
+                    ID: `${idProduct._id}`,
+                    STOCK: `${idProduct.stock}`,
+                    QUANTITY: `${quantity}`
+
+                }
+                stock.push(product);
+            } else {
+                let product = {
+                    ID: `${idProduct._id}`,
+                    STOCK: `${idProduct.stock}`,
+                    QUANTITY: `${quantity}`
+
+                }
+                outOfStock.push(product);
+            }
+        });
+
+        const response = {
+            status: outOfStock.length === 0 ? true : false,
+            stock: stock,
+            outOfStock: outOfStock
+        }
+
+
+        return response;
+    };
 }
 
 export default ServiceCart;

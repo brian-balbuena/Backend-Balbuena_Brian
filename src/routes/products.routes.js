@@ -1,18 +1,19 @@
 import { Router } from "express";
 import { addApiProduct, deleteApiProduct, getApiProduct, getApiProductId, updateApiProduct } from "../controllers/product.controller.js";
+import { checkRolAdmin } from "../middlewares/auth.js";
 
 
 const productsRouter = Router();
 
 
-productsRouter.get('/', getApiProduct);
+productsRouter.get('/',checkRolAdmin, getApiProduct);
 
-productsRouter.get('/:pid', getApiProductId);
+productsRouter.get('/:pid',checkRolAdmin, getApiProductId);
 
-productsRouter.post('/', addApiProduct);
+productsRouter.post('/',checkRolAdmin, addApiProduct);
 
-productsRouter.put('/:pId', updateApiProduct);
+productsRouter.put('/:pId',checkRolAdmin, updateApiProduct);
 
-productsRouter.delete('/:pId', deleteApiProduct);
+productsRouter.delete('/:pId',checkRolAdmin, deleteApiProduct);
 
 export default productsRouter;

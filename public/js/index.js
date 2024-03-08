@@ -1,5 +1,20 @@
 const socket = io();
 
+const logoutButton = document.getElementById('logoutButton');
+
+logoutButton.addEventListener('click', async () => {
+
+  const result = await fetch('http://localhost:8080/api/session//logout', {
+      method: 'post',
+      headers: {
+         'Content-Type': 'application/json'
+      }
+   })
+
+   const { redirect } = await result.json();
+   window.location.href = redirect
+});
+
 const listContainer = document.getElementById('listContainer');
 
 socket.on('productsRealtime', data => {
@@ -71,3 +86,4 @@ socket.emit('user', user.value);
 
     console.log(userActive);
 }); */
+
