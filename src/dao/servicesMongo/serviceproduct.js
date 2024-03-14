@@ -1,3 +1,4 @@
+
 import { productModel } from "../models/products.model.js";
 
 class ServiceProduct {
@@ -30,6 +31,10 @@ class ServiceProduct {
         try {
 
             const productId = await productModel.findOne({ _id: pId });
+
+            if(productId === null){
+                return { status: (400), send: ({ message: 'products not found' }) };
+            }
             return { status: (200), send: ({ productId }) };
         } catch (error) {
             console.error(error);

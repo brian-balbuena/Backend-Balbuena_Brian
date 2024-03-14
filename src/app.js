@@ -16,6 +16,7 @@ import passport from 'passport';
 import initializePassport from './configs/passport.config.js';
 import { Command } from 'commander'
 import { getVariables } from './configs/config.js';
+import { ErrorHandler } from './middlewares/error.js';
 
 const program = new Command();
 program.option('--mode <mode>', 'Modo de trabajo', 'production');
@@ -52,14 +53,13 @@ app.engine('handlebars', hbs.engine);
 app.set('views', 'src/views');
 app.set('view engine', 'handlebars');
 
-    /* CAMBIAR POR MONGIO URL Y PROBAR  */
 mongoose.connect(mongoURL);
 
 app.use('/api/products', productsRouter);
 app.use('/api/carts', cartsRouter);
 app.use('/api/session', sessionRoutes);
 app.use('/', viewRouters);
-
+app.use(ErrorHandler);
 
 const httpServer = app.listen(port, () => {
     console.log(`Seervidor en puerto ${port}`);

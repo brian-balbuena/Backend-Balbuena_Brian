@@ -1,6 +1,6 @@
 import { Router } from "express";
 import { checkAuth, checkExistingUser, checkRolAdmin, checkRoleUser } from "../middlewares/auth.js";
-import { getProduct } from "../controllers/product.controller.js";
+import { getMokingProducts, getProduct } from "../controllers/product.controller.js";
 import { getCartId } from "../controllers/cart.controller.js";
 import { current } from "../controllers/session.controller.js";
 
@@ -58,5 +58,7 @@ viewRouters.get('/failregister', (req, res) => {
 })
 
 viewRouters.get('/current', checkAuth, current);
+
+viewRouters.get('/mockingproducts', getMokingProducts)
 
 export default viewRouters;
