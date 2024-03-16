@@ -1,4 +1,5 @@
 
+import mongoose from "mongoose";
 import { productModel } from "../models/products.model.js";
 
 class ServiceProduct {
@@ -49,7 +50,6 @@ class ServiceProduct {
             return { status: (201), send: ({ message: 'Product created' }) };
 
         } catch (error) {
-            console.log(`errorrrr`)
             console.error(error);
             return { status: (400), error: error, send: ({ message: 'Could not create a product' }) };
         }
@@ -72,12 +72,18 @@ class ServiceProduct {
     async deleteProductService(pId) {
 
         try {
-            const productDeleted = await productModel.deleteOne({ _id: pId });
-
-            if (!productDeleted.deletedCount) {
+            if (pId.length !== 24) {
                 return {status:(404), send:({ message: 'Product not found' })};
-            };
-            return {status:(200), send:({ message: 'product deleted' })};
+            
+            } else {
+                const objectId =new  mongoose.Types.ObjectId(pId);
+                const productDeleted = await productModel.deleteOne({ _id: objectId});
+                if (!productDeleted.deletedCount) {
+                    return {status:(404), send:({ message: 'Product not found' })};
+                };
+                return {status:(200), send:({ message: 'product deleted' })};
+            }
+            
         } catch (error) {
             console.error(error);
             return {status:(400), error: error, send:({ message: 'could not delete product' })};

@@ -1,7 +1,7 @@
 import UserDTO from "../dao/dtos/user.dto.js";
 import CustomErrors from "../dao/errors/customErrors.js";
 import ErrorEnum from "../dao/errors/error.enum.js";
-import { createProductError, getProductError } from "../dao/errors/info.js";
+import { createProductError, deletedProductError, getProductError, updateProductError } from "../dao/errors/info.js";
 import { generateProductMocking, generateUserMocking } from "../dao/servicesMocking/servicesProductMocking.js";
 import ServiceProduct from "../dao/servicesMongo/serviceproduct.js";
 
@@ -82,14 +82,18 @@ export const addApiProduct = async (req, res, next) => {
     const { title, description, price, code, stock, category } = req.body;
 
     if (!title || !description || !price || !code || !stock || !category) {
-        /*   return res.status(400).send({ message: 'Product incomplete' }); */
-        console.log('1')
-        return CustomErrors.createError({
-            name: 'the product was not created',
-            cause: getProductError(33),
-            message: 'Product incomplete',
-            code: ErrorEnum.CREATE_ERROR
-        });
+        try {
+            throw CustomErrors.createError({
+                name: 'the product was not created',
+                cause: getProductError(33),
+                message: 'Product incomplete',
+                code: ErrorEnum.CREATE_ERROR
+            });
+        } catch (error) {
+
+            next(error);
+        }
+        return;
     };
 
 
@@ -99,21 +103,23 @@ export const addApiProduct = async (req, res, next) => {
     if (response.status === 201) {
         res.status(201).send({ message: 'Product created' });
     } else {
-        /*      console.error(response.error);
-             res.status(400).send({ message: 'Could not create a product' }); */
-        console.log('2')
-        const error = CustomErrors.createError({
-            name: 'the product was not created',
-            cause: createProductError(),
-            message: 'Error when trying to create a product',
-            code: ErrorEnum.CREATE_ERROR
-        });
-        next(error);
+        try {
+            throw CustomErrors.createError({
+                name: 'the product was not created',
+                cause: createProductError(),
+                message: 'Error when trying to create a product',
+                code: ErrorEnum.CREATE_ERROR
+            });
+        } catch (error) {
+
+            next(error);
+        }
     }
+
 
 };
 
-export const updateApiProduct = async (req, res) => {
+export const updateApiProduct = async (req, res, next) => {
 
     const { pId } = req.params;
     const infoNew = req.body;
@@ -124,12 +130,24 @@ export const updateApiProduct = async (req, res) => {
     if (productUpdate.status === 200) {
         return res.status(200).send({ message: 'Product updated' });
     } else {
-        return res.status(productUpdate.status).send(productUpdate.send);
+       
+        try {
+            throw CustomErrors.createError({
+                name: 'Could not edit',
+                cause: updateProductError(pId),
+                message: `It was not possible to edit the product with id:${pId}`,
+                code: ErrorEnum.UPDATE_ERROR
+            });
+        } catch (error) {
+
+            next(error);
+        }
+        return;
     }
 
 };
 
-export const deleteApiProduct = async (req, res) => {
+export const deleteApiProduct = async (req, res, next) => {
 
     const { pId } = req.params;
 
@@ -139,8 +157,22 @@ export const deleteApiProduct = async (req, res) => {
     if (productDeleted.status === 200) {
         return res.status(200).send({ message: 'product deleted' });
     } else {
-        return res.status(productDeleted.status).send(productDeleted.send);
+        try {
+
+            throw CustomErrors.createError({
+                name: 'Could not be deleted',
+                cause: deletedProductError(pId),
+                message: `It was not possible to delete the product with id:${pId}`,
+                code: ErrorEnum.DELETE_ERROR
+            });
+        } catch (error) {
+
+            next(error);
+        }
+        return;
+      
     }
+
 };
 
 export const getMokingProducts = (req, res) => {

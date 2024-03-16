@@ -22,7 +22,7 @@
 <form class="row g-3" id="deleteForm">
     <div class="col-md-4">
         <label for="Id" class="form-label">Id</label>
-        <input type="number" class="form-control" id="Id" placeholder="Id" name="Id">
+        <input type="text" class="form-control" id="Id" placeholder="Id" name="Id">
     </div>
 
     <div class="col-12">
@@ -32,21 +32,41 @@
 
 
 <script src="/socket.io/socket.io.js"></script>
-<script src="js/index.js"></script>
+{{!-- <script src="js/index.js"></script> --}}
 
 <script>
 
 
-document.getElementById('deleteForm').addEventListener('submit', function(event) {
+document.getElementById('deleteForm').addEventListener('submit',async function(event) {
     event.preventDefault();
 
     const id = document.getElementById('Id').value;
 
-    fetch('api/products/' + id, {
+    {{!--  fetch('api/products/' + id, {
         method: 'DELETE',
         body: JSON.stringify({ Id: id })
 
-    }) 
+    })  --}}
+
+     try {
+        const response = await fetch('api/products/' + id, {
+            method: 'DELETE',
+            body: JSON.stringify({ Id: id })
+        });
+
+        if (response.ok) {
+            const responseData = await response.json();
+            alert(responseData.message); 
+        } else {
+            const errorData = await response.json();
+            alert(errorData.error); 
+        }
+    } catch (error) {
+        console.error('Error de red:', error);
+        alert('Error de red: ' + error.message); 
+    }
 
 });
+
+
 </script>

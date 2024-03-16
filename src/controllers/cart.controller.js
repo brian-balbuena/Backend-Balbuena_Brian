@@ -1,9 +1,12 @@
 import CartDTO from "../dao/dtos/carts.dto.js";
 import TicketDTO from "../dao/dtos/ticket.dto.js";
 import UserDTO from "../dao/dtos/user.dto.js";
+import ErrorEnum from "../dao/errors/error.enum.js";
+import { addProductToCartError } from "../dao/errors/info.js";
 import ServiceCart from "../dao/servicesMongo/servicecart.js";
 import { updateStockProduct } from "./stock.controller.js";
 import { createTicket } from "./ticket.controller.js";
+import CustomErrors from "../dao/errors/customErrors.js";
 
 const serviceCart = new ServiceCart();
 const cartDto = new CartDTO();
@@ -47,14 +50,30 @@ export const createCartApi = async (req, res) => {
 
 };
 
-export const addProductToCartApi = async (req, res) => {
+export const addProductToCartApi = async (req, res, next) => {
 
     const { cId, pId } = req.params;
     const { quantity = 1 } = req.body;
 
     const addProduct = await serviceCart.addProductToCartService(cId, pId, quantity);
 
-    return res.status(addProduct.status).send(addProduct.send);
+    if(addProduct.status === 200){
+        return res.status(addProduct.status).send(addProduct.send);
+    }else{
+        try {
+
+            throw CustomErrors .createError({
+                name: 'Could not be added to cart',
+                cause: addProductToCartError(cId, pId),
+                message: `Product with id:${pId} could not be added to cart`,
+                code: ErrorEnum.UPDATE_ERROR
+            });
+        } catch (error) {
+            next(error);
+        }
+        return;
+    }
+   
 
 };
 

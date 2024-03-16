@@ -13,7 +13,7 @@ productsRouter.get('/:pid',checkRolAdmin, getApiProductId);
 
 productsRouter.post('/',checkRolAdmin, addApiProduct);
 
-productsRouter.put('/:pId',checkRolAdmin, updateApiProduct);
+productsRouter.put('/:pId', updateApiProduct);
 
 productsRouter.delete('/:pId',checkRolAdmin, deleteApiProduct);
 
