@@ -19,11 +19,13 @@ export const getProduct = async (req, res) => {
         if (products) {
             res.render('products', { products, firstName: userDTO.first_name, lastName: userDTO.last_name, role: userDTO.role });
         } else {
+            req.logger.error('product error');
             res.status(400).send({ message: 'product not found' })
         }
 
     } catch (error) {
         console.log(error);
+        req.logger.fatal('product error');
         res.status(400).send({ message: 'product not found' })
     }
 
@@ -44,11 +46,13 @@ export const getApiProduct = async (req, res) => {
         if (products) {
             res.render('products', { products, firstName: userDTO.first_name, lastName: userDTO.last_name, role: userDTO.role });
         } else {
+            req.logger.error('product error');
             res.status(400).send({ message: 'product not found' })
         }
 
     } catch (error) {
         console.log(error);
+        req.logger.fatal('product error');
         res.status(400).send({ message: 'product not found' })
     }
 };
@@ -62,6 +66,7 @@ export const getApiProductId = async (req, res, next) => {
         const productId = await serviceProduct.getProductIdService(pid);
 
         if (productId.status === 400) {
+            req.logger.error('product error');
             return CustomErrors.createError({
                 name: 'The product was not found',
                 cause: getProductError(pid),
@@ -158,7 +163,7 @@ export const deleteApiProduct = async (req, res, next) => {
         return res.status(200).send({ message: 'product deleted' });
     } else {
         try {
-
+            req.logger.error('product error');
             throw CustomErrors.createError({
                 name: 'Could not be deleted',
                 cause: deletedProductError(pId),

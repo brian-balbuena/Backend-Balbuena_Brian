@@ -6,6 +6,7 @@ import productsRouter from './routes/products.routes.js';
 import cartsRouter from './routes/carts.routes.js';
 import viewRouters from './routes/views.routes.js';
 import sessionRoutes from './routes/session.routes.js';
+import logerRouter from './routes/loggerTest.router.js';
 import mongoose from 'mongoose';
 
 import { productModel } from '../src/dao/models/products.model.js';
@@ -17,11 +18,13 @@ import initializePassport from './configs/passport.config.js';
 import { Command } from 'commander'
 import { getVariables } from './configs/config.js';
 import { ErrorHandler } from './middlewares/error.js';
+import { addLogger } from './utils/logger.js';
+
 
 const program = new Command();
 program.option('--mode <mode>', 'Modo de trabajo', 'production');
 const option = program.parse();
-const { port , mongoURL, secret } = getVariables(option);
+const { port , mongoURL, secret, work_environment} = getVariables(option);
 
 const app = express();
 /* const PORT = 8080; */
@@ -55,10 +58,12 @@ app.set('view engine', 'handlebars');
 
 mongoose.connect(mongoURL);
 
+app.use(addLogger(work_environment))
 app.use('/api/products', productsRouter);
 app.use('/api/carts', cartsRouter);
 app.use('/api/session', sessionRoutes);
 app.use('/', viewRouters);
+app.use('/loggerTest', logerRouter)
 app.use(ErrorHandler);
 
 const httpServer = app.listen(port, () => {

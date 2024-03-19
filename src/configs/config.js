@@ -11,6 +11,7 @@ export const getVariables = (option) => {
     return {
         port : process.env.PORT,
         mongoURL: process.env.mongoURL,
-        secret: process.env.secret
+        secret: process.env.secret,
+        work_environment: process.env.work_environment
     }
 };

@@ -20,6 +20,7 @@ export const getCartId = async (req, res) => {
     if (productCart.status === 200) {
         res.render('cart', productCart);
     } else {
+        req.logger.error('cart error');
         res.render('fail');
     }
 
@@ -61,7 +62,7 @@ export const addProductToCartApi = async (req, res, next) => {
         return res.status(addProduct.status).send(addProduct.send);
     }else{
         try {
-
+            req.logger.error('cart error');
             throw CustomErrors .createError({
                 name: 'Could not be added to cart',
                 cause: addProductToCartError(cId, pId),
@@ -129,12 +130,14 @@ export const purchase = async (req, res) => {
         const productDto = await cartDto.cartPurchaseDTO(checkStock.outOfStock, cId);
         const { id, ...outOfStock } = productDto;
 
+        req.logger.error('cart error');
         res.render('failPurchaseStock', { outOfStock: outOfStock, id: id, firstName: userDTO.first_name, lastName: userDTO.last_name, role: userDTO.role, });
     } else {
 
         const ticket = await createTicket(req, res, checkStock.stock);
 
         if (ticket.status != 201) {
+            req.logger.error('cart error');
             res.render('failPurchase', { firstName: userDTO.first_name, lastName: userDTO.last_name, role: userDTO.role, });
         } else {
 
