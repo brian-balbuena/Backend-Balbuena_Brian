@@ -1,6 +1,6 @@
 import { Router } from "express";
 import { addProductToCartApi, createCartApi, deleteCartApi, deleteProductToCartApi, editCartApi, editProductToCartApi, getCartApi, getCartIdApi, purchase } from "../controllers/cart.controller.js";
-import { checkAuth, checkExistingUser, checkRoleUser } from "../middlewares/auth.js";
+import { checkAuth, checkExistingUser, checkRolPremium, checkRoleUser } from "../middlewares/auth.js";
 
 
 const cartsRouter = Router();
@@ -11,7 +11,7 @@ cartsRouter.get('/:cId',checkRoleUser, getCartIdApi);
 
 
 cartsRouter.post('/',checkRoleUser, createCartApi);
-cartsRouter.post('/:cId/product/:pId',checkRoleUser, addProductToCartApi);
+cartsRouter.post('/:cId/product/:pId',checkRoleUser,checkRolPremium, addProductToCartApi);
 
 
 cartsRouter.put('/:cId',checkRoleUser, editCartApi);

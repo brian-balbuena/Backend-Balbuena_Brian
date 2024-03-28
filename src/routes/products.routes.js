@@ -1,6 +1,6 @@
 import { Router } from "express";
 import { addApiProduct, deleteApiProduct, getApiProduct, getApiProductId, updateApiProduct } from "../controllers/product.controller.js";
-import { checkRolAdmin } from "../middlewares/auth.js";
+import { checkRolAdmin, checkRolPremium } from "../middlewares/auth.js";
 import { ErrorHandler } from "../middlewares/error.js";
 
 
@@ -13,9 +13,9 @@ productsRouter.get('/:pid',checkRolAdmin, getApiProductId);
 
 productsRouter.post('/',checkRolAdmin, addApiProduct);
 
-productsRouter.put('/:pId', updateApiProduct);
+productsRouter.put('/:pId',checkRolAdmin,checkRolPremium, updateApiProduct);
 
-productsRouter.delete('/:pId',checkRolAdmin, deleteApiProduct);
+productsRouter.delete('/:pId',checkRolAdmin, checkRolPremium, deleteApiProduct);
 
 /* productsRouter.use(ErrorHandler); */
 

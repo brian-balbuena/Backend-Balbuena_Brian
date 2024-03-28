@@ -6,7 +6,9 @@ import productsRouter from './routes/products.routes.js';
 import cartsRouter from './routes/carts.routes.js';
 import viewRouters from './routes/views.routes.js';
 import sessionRoutes from './routes/session.routes.js';
+import userSRouter from './routes/users.routes.js';
 import logerRouter from './routes/loggerTest.router.js';
+import mailingRouter from './routes/mailing.routes.js';
 import mongoose from 'mongoose';
 
 import { productModel } from '../src/dao/models/products.model.js';
@@ -21,11 +23,18 @@ import { ErrorHandler } from './middlewares/error.js';
 import { addLogger } from './utils/logger.js';
 
 
+
+
 const program = new Command();
 program.option('--mode <mode>', 'Modo de trabajo', 'production');
 const option = program.parse();
-const { port , mongoURL, secret, work_environment} = getVariables(option);
+const { port , mongoURL, secret, work_environment,mailing_user, mailing_service,  mailing_password} = getVariables(option);
 
+export const mailingConfig = {
+ user: mailing_user,
+ service: mailing_service,
+ password: mailing_password
+};
 const app = express();
 /* const PORT = 8080; */
 
@@ -62,8 +71,10 @@ app.use(addLogger(work_environment))
 app.use('/api/products', productsRouter);
 app.use('/api/carts', cartsRouter);
 app.use('/api/session', sessionRoutes);
+app.use('/api/users', userSRouter);
 app.use('/', viewRouters);
-app.use('/loggerTest', logerRouter)
+app.use('/loggerTest', logerRouter);
+app.use('/api/mailing', mailingRouter);
 app.use(ErrorHandler);
 
 const httpServer = app.listen(port, () => {

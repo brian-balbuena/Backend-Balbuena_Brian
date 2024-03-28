@@ -1,6 +1,7 @@
 
 import mongoose from "mongoose";
 import { productModel } from "../models/products.model.js";
+import ServiceUser from "./serviceuser.js";
 
 class ServiceProduct {
 
@@ -43,10 +44,22 @@ class ServiceProduct {
         }
     };
 
-    async addProductService(title, description, price, code, stock, category) {
+    async addProductService(title, description, price, code, stock, category, email) {
 
         try {
-            await productModel.create({ title, description, price, code, stock, category });
+            
+            let owner = "admin"
+            if(email != "") {               
+                const serviceUser = new ServiceUser();
+                const idUser = await serviceUser.idUser(email);
+               
+                if(idUser.status != 200){
+                    return { status: (400), error: error, send: ({ message: 'Could not create a product' }) };
+                };
+                owner = idUser.id;
+            };
+            
+            await productModel.create({ title, description, price, code, stock, category, owner});
             return { status: (201), send: ({ message: 'Product created' }) };
 
         } catch (error) {

@@ -27,6 +27,10 @@ const productSchema = mongoose.Schema({
     type: String,
     default: "generico"
   }
+  ,owner: {
+    type: String,
+    default: "admin"
+  }
   ,satatus: {
     type: Boolean,
     default: true

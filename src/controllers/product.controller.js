@@ -4,6 +4,7 @@ import ErrorEnum from "../dao/errors/error.enum.js";
 import { createProductError, deletedProductError, getProductError, updateProductError } from "../dao/errors/info.js";
 import { generateProductMocking, generateUserMocking } from "../dao/servicesMocking/servicesProductMocking.js";
 import ServiceProduct from "../dao/servicesMongo/serviceproduct.js";
+import { getIdByEmail } from "./user.controller.js";
 
 
 export const getProduct = async (req, res) => {
@@ -85,6 +86,7 @@ export const getApiProductId = async (req, res, next) => {
 export const addApiProduct = async (req, res, next) => {
 
     const { title, description, price, code, stock, category } = req.body;
+    const { user } = req.session;
 
     if (!title || !description || !price || !code || !stock || !category) {
         try {
@@ -101,9 +103,13 @@ export const addApiProduct = async (req, res, next) => {
         return;
     };
 
+    let email = "";
+    if (user.role === 'premium') {
+        email = user.email;
+    } 
 
     const serviceProduct = new ServiceProduct();
-    const response = await serviceProduct.addProductService(title, description, price, code, stock, category);
+    const response = await serviceProduct.addProductService(title, description, price, code, stock, category, email);
 
     if (response.status === 201) {
         res.status(201).send({ message: 'Product created' });
@@ -135,7 +141,7 @@ export const updateApiProduct = async (req, res, next) => {
     if (productUpdate.status === 200) {
         return res.status(200).send({ message: 'Product updated' });
     } else {
-       
+
         try {
             throw CustomErrors.createError({
                 name: 'Could not edit',
@@ -175,7 +181,7 @@ export const deleteApiProduct = async (req, res, next) => {
             next(error);
         }
         return;
-      
+
     }
 
 };
@@ -193,4 +199,34 @@ export const getMokingProducts = (req, res) => {
 
     res.render('products', { products, firstName: user.firstName, lastName: user.lastName, role: user.role });
 
+};
+
+export const idVerification =  async (id, user) => {
+
+    try {
+        const serviceProduct = new ServiceProduct();
+        const productId = await serviceProduct.getProductIdService(id);
+
+        if (productId.status === 400) {
+           return false;
+        }
+        
+        if(user.role != 'premium'){
+            return false;
+        }
+
+        const owner = productId.send.productId.owner;
+        const idUser = await getIdByEmail(user.email)
+        console.log('owner', owner)
+        console.log('idUser', idUser)
+        if(owner != idUser){
+            return false;
+        }
+
+        return true;
+       
+    } catch (error) {
+        console.error(error);
+        return false;
+    }
 };

@@ -48,6 +48,9 @@ viewRouters.get('/login', checkExistingUser, (req, res) => {
 viewRouters.get('/faillogin', (req, res) => {
     res.render('failLogin');
 })
+viewRouters.get('/fail', (req, res) =>  {
+    res.render('failDeleteProduct');
+});
 
 viewRouters.get('/register', checkExistingUser, (req, res) => {
 
@@ -57,6 +60,9 @@ viewRouters.get('/failregister', (req, res) => {
     res.render('failRegister');
 })
 
+viewRouters.get('/restorePassword', (req, res) => {
+    res.render('restorePassword');
+})
 viewRouters.get('/current', checkAuth, current);
 
 viewRouters.get('/mockingproducts', getMokingProducts)

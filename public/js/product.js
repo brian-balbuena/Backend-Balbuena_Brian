@@ -20,40 +20,6 @@ function updateNumber(value, id) {
 }
 
 
-/* async function editProduct(id) {
-   try {
- 
-console.log('id', id)
-      const editProduct = await fetch(`http://localhost:8080/api/products/${id}`, {
-         body: JSON.stringify({
-            quantity: quantity
-         }),
-         method: 'put',
-         headers: {
-            'Content-Type': 'application/json'
-         }
-
-      });
-   } catch (error) {
-      console.error(error);
-      const Toast = Swal.mixin({
-         toast: true,
-         position: "top-end",
-         showConfirmButton: false,
-         timer: 2000,
-         didOpen: (toast) => {
-            toast.onmouseenter = Swal.stopTimer;
-            toast.onmouseleave = Swal.resumeTimer;
-         }
-      });
-      Toast.fire({
-         icon: "error",
-         title: `no se pudo acceder`
-
-      });
-   }
-} */
-
 async function addCart(id, title) {
 
    try {
