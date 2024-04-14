@@ -1,0 +1,214 @@
+paths:
+    /api/products:
+        get:
+            summary: Obtiene todos los productos
+            tags:
+                - Products
+            responses:
+                "200":
+                    description: Los productos se han obtenido y se renderizan
+                    content:
+                        application/json:
+                            schema:
+                                type: array
+                                items:
+                                    $ref: '#components/schemas/Products'
+                "400": 
+                    description: Los productos no se han obtenido debido a un error    
+        post:
+            summary: Crea un nuevo producto
+            tags: 
+                - Products
+            responses:
+                "201":
+                    description: El producto se creo exitosamente
+            requestBody:
+                required: true
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#components/requestBodies/CreateProduct'
+                "400":
+                    description: Error al crear un producto
+
+    /api/products/{pid}:
+        get:
+            summary: Obtiene un producto particular segun su Id
+            tags:
+                - Products
+            parameters:
+                - name: pid
+                  in: path
+                  description: Id del producto
+                  schema:
+                     type: ObjetId
+            responses:
+                "200":
+                    description: El prducto se encontro correctamente
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#components/schemas/Products'
+                "400":
+                    description: Error al obtener un producto
+        put:
+            summary: Actualiza un producto a partir de su Id
+            tags:
+                - Products
+            parameters:
+                - name: pid
+                  in: path
+                  description: Id del producto que se quiere actualizar
+                  schema:
+                        type: String
+            requestBody:
+                required: true
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#components/requestBodies/UpdateProduct'
+        delete:
+            summary: Elimina un producto a partir de un Id 
+            tags:
+                - Products
+            parameters:
+                - name: pid
+                  in: path
+                  description: Id del producto que se quiere eliminar
+                  schema:
+                     type: ObjetId
+            responses:
+                "200":
+                    description: El prducto fue borrado correctamente
+                "400":
+                    description: Error al borrar un producto
+
+
+components:
+    schemas:
+        Products:
+            type: object
+            properties:
+                _id:
+                    type: ObjectId
+                    description: Id autogenerado por mongo
+                title: 
+                    type: String
+                    description: Nombre del producto
+                description: 
+                    type: String
+                    description: Breve descripcion del prodcuto
+                price: 
+                    type: Number
+                    description: Precio del producto
+                thumbnail: 
+                    type: String
+                    description: Ruta donde se encuntra la imagen del producto
+                code: 
+                    type: String
+                    description: Condigo unico que idenfifica al producto
+                stock: 
+                    type: Number
+                    description: Cantidad de ese producto que se encuentra en stock
+                category: 
+                    type: String
+                    description: Categoria a la que pertenece el producto
+                owner: 
+                    type: String
+                    description: Tipo de acceso de que tiene el usuario que creo este producto
+                satatus: 
+                    type: Boolean
+                    description: Es una variable que se utiliza para dar de alta o baja un producto
+            example:
+                _id: 65a8572b02691e8b43ea2143
+                title: Cactus
+                description: Los cactus son plantas suculentas adaptadas a climas áridos
+                price: 650
+                thumbnail: /././prueba.png
+                code: 00226
+                stock: 25
+                category: suculentas
+                owner: usuario
+                satatus: true
+    requestBodies:
+        UpdateProduct:
+            type: object
+            properties:
+                title: 
+                    type: String
+                    description: Nombre del producto
+                description: 
+                    type: String
+                    description: Breve descripcion del prodcuto
+                price: 
+                    type: Number
+                    description: Precio del producto
+                thumbnail: 
+                    type: String
+                    description: Ruta donde se encuntra la imagen del producto
+                code: 
+                    type: String
+                    description: Condigo unico que idenfifica al producto
+                stock: 
+                    type: Number
+                    description: Cantidad de ese producto que se encuentra en stock
+                category: 
+                    type: String
+                    description: Categoria a la que pertenece el producto
+                owner: 
+                    type: String
+                    description: Tipo de acceso de que tiene el usuario que creo este producto
+                satatus: 
+                    type: Boolean
+                    description: Es una variable que se utiliza para dar de alta o baja un producto
+            example:
+                _id: 65a8572b02691e8b43ea2143
+                title: Cactus
+                description: Los cactus son plantas suculentas adaptadas a climas áridos
+                price: 650
+                thumbnail: /././prueba.png
+                code: 00226
+                stock: 25
+                category: suculentas
+                owner: usuario
+                satatus: true
+        CreateProduct:
+            type: object
+            properties:
+                title: 
+                    type: String
+                    description: Nombre del producto
+                description: 
+                    type: String
+                    description: Breve descripcion del prodcuto
+                price: 
+                    type: Number
+                    description: Precio del producto
+                thumbnail: 
+                    type: String
+                    description: Ruta donde se encuntra la imagen del producto
+                code: 
+                    type: String
+                    description: Condigo unico que idenfifica al producto
+                stock: 
+                    type: Number
+                    description: Cantidad de ese producto que se encuentra en stock
+                category: 
+                    type: String
+                    description: Categoria a la que pertenece el producto
+                owner: 
+                    type: String
+                    description: Tipo de acceso de que tiene el usuario que creo este producto
+                satatus: 
+                    type: Boolean
+                    description: Es una variable que se utiliza para dar de alta o baja un producto
+            example:
+                title: Cactus
+                description: Los cactus son plantas suculentas adaptadas a climas áridos
+                price: 650
+                thumbnail: /././prueba.png
+                code: 00226
+                stock: 25
+                category: suculentas
+                owner: usuario
+                satatus: true

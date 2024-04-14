@@ -1,0 +1,202 @@
+paths:
+  /api/carts:
+    get:
+      summary: Obtiene todos los carritos
+      tags: 
+        - Carts
+      responses:
+        "200":
+          description: Los carritos se han obtenido correctamente
+          content:
+            application/json:
+              schema:
+                type: array
+                $ref: '#components/schemas/Carts'
+        "400":
+          description: Error al obtener los carritos
+    post:
+      summary: Crea un nuevo carrito
+      tags: 
+        - Carts
+      responses:
+        "201":
+          description: El carrito se creo correctamente
+        "400": 
+          description: Error al intentar crear un carrito
+
+  /api/carts/{cId}:
+    get: 
+      summary: Obtiene un carrito particular segun su Id
+      tags: 
+        - Carts
+      parameters:
+        - name: cId
+          in: path
+          description: Id del carrito
+          schema:
+            type: String
+      responses:
+        "200":
+          description: El carrito se encontro correctamente
+          content: 
+            application/json:
+              schema:
+                $ref: '#components/schemas/Carts'
+        "400":
+          description: Error al buscar el carrito
+    put:
+      summary: Atualiza el carrito a partir de su Id
+      tags:
+        - Carts
+      parameters:
+        - name: cId
+          in: path
+          description: Id del carrito
+          schema:
+            type: String
+      requestBody:
+        required: true
+        content: 
+          application/json:
+            schema:
+              $ref: '#components/requestBodies/UpdateCart'
+      responses:
+        "200":
+          description: El carrito de modifico con exito
+        "400": 
+          description: Error al modificar el carrito
+    delete:
+      summary: Borra el contenido del carrito 
+      tags:
+        - Carts
+      parameters:
+        - name: cId
+          in: path
+          description: Id del carrito
+          schema:
+            type: String
+      responses: 
+        "200":
+          description: Productos eliminados con exito
+        "400": 
+          description: Error al intentar eliminar los productos
+
+
+  /api/carts/{cId}/product/{pId}:
+    post:
+      summary: Agrego un producto en particular por su Id a un carrito en particular a partir de su Id
+      tags:
+        - Carts
+      parameters:
+        - name: cId
+          in: path
+          description: Id del carrito donde se quiere agregar
+          schema:
+            type: String
+        - name: pId
+          in: path
+          description: Id del producto que se quiere agregar
+          schema:
+            type: String
+      requestBody:
+        required: true
+        content:
+          application/json:
+          schema:
+            $ref: '#components/requestBodies/AddProductToCart'
+      responses:
+        "200": 
+          description: Producto agregado con exito
+        "400": 
+          description: Error al intentar agregar un producto
+    put:
+      summary: Actuliza la cantidad de un productos a traves de su Id en un carrito a traves de su Id
+      tags:
+        - Carts
+      parameters:
+        - name: cId
+          in: path
+          description: Id del carrito
+          schema:
+            type: String
+        - name: pId
+          in: path
+          description: Id del producto
+          schema:
+            type: String
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#components/requestBodies/UpdateProductToCart'
+      responses:
+        "200": 
+          description: Producto actualizado con exito
+        "400": 
+          description: Error al intentar actualizaar un producto
+    delete: 
+      summary: Borra un producto a traves de su Id de un carrito a traves de su Id
+      tags: 
+        - Carts
+      parameters:
+        - name: cId
+          in: path
+          description: Id del carrito
+          schema:
+            type: String
+        - name: pId
+          in: path
+          description: Id del producto
+          schema:
+            type: String
+      responses: 
+        "200":
+          description: Producto borrado con exito
+        "400": 
+          description: Error al intentar borrar un producto
+
+
+components:
+  schemas:
+    Carts:
+      type: object
+      properties:
+        _id:
+          type: ObjectId
+          description: Id autogenerado por mongo
+        products: 
+          type: array
+          description: Array donde se guardan los productos que se agregan al carrito
+      example:
+        _id: 65a06fc25629c9a8fe350669
+        products: []
+  requestBodies:
+    AddProductToCart:
+      type: object
+      properties:
+        quantity:
+          type: Nunmber
+          description: cantidad del producto que se va a agregar
+      example:
+        quantity: 4
+    UpdateCart:
+      type: object
+      properties:
+        products:
+          type: array
+          description: Array donde se guardan los productos que se agregan al carrito
+      example:
+        products: 
+          - idProduct: objectId('65a865c2ee942fac79980938')
+            quantity: 5
+            _id: 65ac9e01234abdf3144633a5
+    UpdateProductToCart:
+      type: object
+      properties:
+        quantity:
+          type: Nunmber
+          description: Cantidad del producto que va quedar en carrito
+      example:
+        quantity: 2
+

@@ -17,6 +17,5 @@ productsRouter.put('/:pId',checkRolAdmin,checkRolPremium, updateApiProduct);
 
 productsRouter.delete('/:pId',checkRolAdmin, checkRolPremium, deleteApiProduct);
 
-/* productsRouter.use(ErrorHandler); */
 
 export default productsRouter;

@@ -15,9 +15,9 @@ export const sessionLog = (req, res) => {
         role: req.user.role
     };
 
-    if(req.session.user){
+    if (req.session.user) {
         return res.redirect('/products');
-    }else {
+    } else {
         return res.redirect('/failregister');
     }
 };
@@ -49,19 +49,19 @@ export const current = (req, res) => {
 
 export const restorePassword = async (req, res) => {
 
-    const { email, password} = req.body;
+    const { email, password } = req.body;
     try {
-        
-        const user = await userModel.findOne({email});
-        if(!user){
-            return res.status(400).send({message: 'Unautorized'});
+
+        const user = await userModel.findOne({ email });
+        if (!user) {
+            return res.status(400).send({ message: 'Unautorized' });
         }
-      user.password = createHash(password);
-      await user.save();
-      res.send({message: 'password update'})
+        user.password = createHash(password);
+        await user.save();
+        res.send({ message: 'password update' })
     } catch (error) {
         console.error(error);
-        return res.status(404).send({message: 'restored not found'});
+        return res.status(404).send({ message: 'restored not found' });
     }
-  
+
 };

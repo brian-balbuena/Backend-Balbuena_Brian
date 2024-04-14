@@ -1,6 +1,8 @@
 import express, { response } from 'express';
 import handlebars from 'express-handlebars'
 import { Server, Socket } from 'socket.io';
+import swaggerJSDoc from 'swagger-jsdoc';
+import swaggerUIExpress from 'swagger-ui-express'
 
 import productsRouter from './routes/products.routes.js';
 import cartsRouter from './routes/carts.routes.js';
@@ -21,9 +23,7 @@ import { Command } from 'commander'
 import { getVariables } from './configs/config.js';
 import { ErrorHandler } from './middlewares/error.js';
 import { addLogger } from './utils/logger.js';
-
-
-
+import { swaggerConfiguration } from './utils/swagger-configuration.js';
 
 const program = new Command();
 program.option('--mode <mode>', 'Modo de trabajo', 'production');
@@ -35,8 +35,12 @@ export const mailingConfig = {
  service: mailing_service,
  password: mailing_password
 };
+
 const app = express();
-/* const PORT = 8080; */
+
+const specs = swaggerJSDoc(swaggerConfiguration);
+app.use('/apidocs', swaggerUIExpress.serve, swaggerUIExpress.setup(specs));
+
 
 app.use(session({
     secret: secret,
