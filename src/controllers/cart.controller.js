@@ -32,7 +32,7 @@ export const getCartIdApi = async (req, res) => {
 
     const productCart = await serviceCart.getCartIdService(cId);
 
-    return res.status(productCart.status).send(productCart.send);
+    return res.status(productCart.status).send(productCart.products);
 };
 
 export const getCartApi = async (req, res) => {
@@ -47,7 +47,7 @@ export const createCartApi = async (req, res) => {
 
     const createCart = await serviceCart.createCartService();
 
-    return res.status(createCart.status).send(createCart.send);
+    return res.status(createCart.status).send(createCart.send.cart);
 
 };
 

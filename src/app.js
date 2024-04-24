@@ -82,7 +82,7 @@ app.use('/api/mailing', mailingRouter);
 app.use(ErrorHandler);
 
 const httpServer = app.listen(port, () => {
-    console.log(`Seervidor en puerto ${port}`);
+    console.log(`Seervidor en puerto ${port} `);
 });
 
 const io = new Server(httpServer);

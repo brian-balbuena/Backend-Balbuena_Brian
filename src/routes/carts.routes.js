@@ -7,18 +7,18 @@ const cartsRouter = Router();
 
 
 cartsRouter.get('/',checkRoleUser, getCartApi);
-cartsRouter.get('/:cId',checkRoleUser, getCartIdApi);
+cartsRouter.get('/:cId'/* ,checkRoleUser */, getCartIdApi);
 
 
-cartsRouter.post('/',checkRoleUser, createCartApi);
-cartsRouter.post('/:cId/product/:pId',checkRoleUser,checkRolPremium, addProductToCartApi);
+cartsRouter.post('/'/* ,checkRoleUser */, createCartApi);
+cartsRouter.post('/:cId/product/:pId',/* checkRoleUser,checkRolPremium, */ addProductToCartApi);
 
 
 cartsRouter.put('/:cId',checkRoleUser, editCartApi);
-cartsRouter.put('/:cId/product/:pId',checkRoleUser, editProductToCartApi);
+cartsRouter.put('/:cId/product/:pId',/* checkRoleUser,  */editProductToCartApi);
 
 
-cartsRouter.delete('/:cId',checkRoleUser, deleteCartApi);
+cartsRouter.delete('/:cId',/* checkRoleUser, */ deleteCartApi);
 cartsRouter.delete('/:cId/product/:pId',checkRoleUser, deleteProductToCartApi);
 
 cartsRouter.get('/:cId/purchase',checkRoleUser,  purchase);

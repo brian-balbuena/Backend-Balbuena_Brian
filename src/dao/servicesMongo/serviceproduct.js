@@ -59,8 +59,8 @@ class ServiceProduct {
                 owner = idUser.id;
             };
             
-            await productModel.create({ title, description, price, code, stock, category, owner});
-            return { status: (201), send: ({ message: 'Product created' }) };
+           const product =  await productModel.create({ title, description, price, code, stock, category, owner});
+            return { status: (201), send: (product /* { message: 'Product created' } */) };
 
         } catch (error) {
             console.error(error);

@@ -12,20 +12,22 @@ const initializePassport = () => {
     passport.use('register', new LocalStrategy(
         { passReqToCallback: true, usernameField: 'email' },
         async (req, username, password, done) => {
+         
             const { first_name, last_name, email, age } = req.body;
-
+            
             try {
                 const user = await userModel.findOne({ email: username });
+                
                 if (user) {
                     console.log('User alredy exists');
                     return done(null, false);
                 };
 
                 const newUser = {
-                    first_name,
-                    last_name,
-                    email,
-                    age,
+                    first_name: first_name,
+                    last_name: last_name,
+                    email: email,
+                    age: age,
                     cart: await cartModel.createCart(),
                     password: createHash(password)
                 };
@@ -33,6 +35,7 @@ const initializePassport = () => {
                 const result = await userModel.create(newUser);
                 return done(null, result);
             } catch (error) {
+
                 return done('Error to obtain the user' + error);
             }
         }

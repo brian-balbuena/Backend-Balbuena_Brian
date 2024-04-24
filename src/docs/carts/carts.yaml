@@ -23,7 +23,7 @@ paths:
           description: El carrito se creo correctamente
         "400": 
           description: Error al intentar crear un carrito
-
+  
   /api/carts/{cId}:
     get: 
       summary: Obtiene un carrito particular segun su Id
@@ -80,7 +80,6 @@ paths:
           description: Productos eliminados con exito
         "400": 
           description: Error al intentar eliminar los productos
-
 
   /api/carts/{cId}/product/{pId}:
     post:

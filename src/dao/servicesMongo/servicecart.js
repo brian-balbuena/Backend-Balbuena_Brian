@@ -8,13 +8,11 @@ class ServiceCart {
     async getCartIdService(id) {
         try {
 
-            const productsCart = await cartModel.findOne({ _id: id }).populate('products.idProduct');
-            const productsRender = productsCart.products
+            const productsCart = await cartModel.findOne({ _id: id })/* .populate('products.idProduct'); */
             return {
                 message: 'ok',
                 status: (200),
-                send: productsRender,
-                products: productsRender
+                products: productsCart
             }
 
         } catch (error) {
@@ -36,8 +34,9 @@ class ServiceCart {
 
     async createCartService() {
         try {
-            await cartModel.createCart();
-            return { status: (200), send: ({ message: 'Cart created' }) };
+           const newCart = await cartModel.createCart();
+
+            return { status: (201), send: ({ message: 'Cart created', cart: newCart }) };
         } catch (error) {
             console.error(error);
             return { status: (400), send: ({ message: 'Could not create a cart' }) };

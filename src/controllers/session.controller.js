@@ -16,8 +16,10 @@ export const sessionLog = (req, res) => {
     };
 
     if (req.session.user) {
+
         return res.redirect('/products');
     } else {
+
         return res.redirect('/failregister');
     }
 };

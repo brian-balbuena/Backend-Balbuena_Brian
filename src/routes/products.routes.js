@@ -7,15 +7,15 @@ import { ErrorHandler } from "../middlewares/error.js";
 const productsRouter = Router();
 
 
-productsRouter.get('/',checkRolAdmin, getApiProduct);
+productsRouter.get('/'/* ,checkRolAdmin */, getApiProduct);
 
-productsRouter.get('/:pid',checkRolAdmin, getApiProductId);
+productsRouter.get('/:pid'/* ,checkRolAdmin */, getApiProductId);
 
-productsRouter.post('/',checkRolAdmin, addApiProduct);
+productsRouter.post('/',/*checkRolAdmin,*/ addApiProduct);
 
 productsRouter.put('/:pId',checkRolAdmin,checkRolPremium, updateApiProduct);
 
-productsRouter.delete('/:pId',checkRolAdmin, checkRolPremium, deleteApiProduct);
+productsRouter.delete('/:pId'/* ,checkRolAdmin, checkRolPremium */, deleteApiProduct);
 
 
 export default productsRouter;

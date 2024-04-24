@@ -35,7 +35,7 @@ export const getProduct = async (req, res) => {
 export const getApiProduct = async (req, res) => {
 
     const { limit = 10, page = 1, query = '', sort = '' } = req.query;
-    const { user } = req.session;
+    const { user = "" } = req.session;
     const userDTO = new UserDTO(user);
 
 
@@ -75,7 +75,7 @@ export const getApiProductId = async (req, res, next) => {
                 code: ErrorEnum.READ_ERROR
             });
         }
-        return res.status(200).send({ productId });
+        return res.status(200).send( productId.send );
     } catch (error) {
         console.error(error);
         /*  res.status(400).send({ error }); */
@@ -88,7 +88,7 @@ export const addApiProduct = async (req, res, next) => {
     const { title, description, price, code, stock, category } = req.body;
     const { user } = req.session;
 
-    if (!title || !description || !price || !code || !stock || !category) {
+    if (!title || !description || !price || !code || !stock) {
         try {
             throw CustomErrors.createError({
                 name: 'the product was not created',
@@ -104,7 +104,7 @@ export const addApiProduct = async (req, res, next) => {
     };
 
     let email = "";
-    if (user.role === 'premium') {
+   if (user && user.role === 'premium') {
         email = user.email;
     } 
 
@@ -112,7 +112,7 @@ export const addApiProduct = async (req, res, next) => {
     const response = await serviceProduct.addProductService(title, description, price, code, stock, category, email);
 
     if (response.status === 201) {
-        res.status(201).send({ message: 'Product created' });
+        res.status(201).send({ product: response.send });
     } else {
         try {
             throw CustomErrors.createError({
