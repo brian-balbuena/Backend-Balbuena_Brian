@@ -1,0 +1,39 @@
+<section class="d-flex justify-content-center bg-success-subtle flex-column" id="headerProduct">
+    <h1 class="d-flex justify-content-center bg-success-subtle ">Perfil</h1>
+    <div style="margin-left: 20px;">
+        <button type="button" class="btn btn-secondary" style="height: 50%; w"><a href="/products"
+                style="text-decoration: none; color: white;">Volver</a></button>
+    </div>
+
+</section>
+
+<section class="d-flex flex-column container justify-content-center" style="width: 50%; height: 700px">
+    <form method="post" action="api/users/662881d1143e8736c9160f61/documents" enctype="multipart/form-data">
+        <div class="input-group input-group-lg" style="margin: 20px 0;">
+            <div class="input-group mb-3">
+                <label class="input-group-text" for="profiles">Imagen de perfil</label>
+                <input type="file" class="form-control" id="profiles" name="profiles">
+            </div>
+        </div>
+
+        <div class="input-group input-group-lg" style="margin: 20px 0;">
+            <div class="input-group mb-3">
+                <label class="input-group-text" for="products">Imagen de producto</label>
+                <input type="file" class="form-control" id="products" name="products">
+            </div>
+        </div>
+
+        <div class="input-group input-group-lg" style="margin: 20px 0;">
+            <div class="input-group mb-3">
+                <label class="input-group-text" for="documents">Documentos</label>
+                <input type="file" class="form-control" id="documents" name="documents" multiple>
+            </div>
+        </div>
+
+
+
+        <div>
+            <button type="submit" class="btn btn-success" style=" margin: 10px;">Subir archivos</button>
+        </div>
+    </form>
+</section>

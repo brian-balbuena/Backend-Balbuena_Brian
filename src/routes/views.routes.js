@@ -3,6 +3,7 @@ import { checkAuth, checkExistingUser, checkRolAdmin, checkRoleUser } from "../m
 import { getMokingProducts, getProduct } from "../controllers/product.controller.js";
 import { getCartId } from "../controllers/cart.controller.js";
 import { current } from "../controllers/session.controller.js";
+import { getIdByEmail } from "../controllers/user.controller.js";
 
 const viewRouters = Router();
 
@@ -67,4 +68,37 @@ viewRouters.get('/current', checkAuth, current);
 
 viewRouters.get('/mockingproducts', getMokingProducts)
 
+viewRouters.get('/uploader', (req, res) => {
+    res.render('uploader');
+})
+
+viewRouters.get('/uploaderDocuments', checkRoleUser ,async (req, res) => {
+
+    const userReq = req.session
+    const user = userReq.user;
+
+    const id = await getIdByEmail(user.email);
+  
+    res.render('uploaderDocuments', { user , id });
+});
+
+viewRouters.get('/uploaderProduct', checkRoleUser, async (req, res) => {
+    const userReq = req.session
+    const user = userReq.user;
+
+    const id = await getIdByEmail(user.email);
+
+    res.render('uploaderProduct', { user, id })
+
+});
+
+viewRouters.get('/changeToPremium', checkRoleUser, async (req, res) => {
+    const userReq = req.session
+    const user = userReq.user;
+
+    const id = await getIdByEmail(user.email);
+
+    res.render('changeToPremium', { user, id })
+
+});
 export default viewRouters;

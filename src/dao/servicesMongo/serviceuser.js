@@ -31,31 +31,31 @@ class ServiceUser {
             console.error(error);
             return { status: (400), error: error, send: ({ message: 'could not update user' }) };
         }
-    }
+    };
 
     async idUser(email) {
         try {
-            const user = await userModel.findOne({email: email})
+            const user = await userModel.findOne({ email: email })
 
             if (!user) {
                 return { status: (404), send: ({ message: 'User not found' }) };
             }
 
-            return {status: 200, id: user._id.toString()};
+            return { status: 200, id: user._id.toString() };
         } catch (error) {
             console.error(error);
             return { status: (400), error: error, send: ({ message: 'could not update user' }) };
         }
-    }
+    };
 
-    async getUserbyemail(email){
+    async getUserbyemail(email) {
         try {
-            const user = await userModel.findOne({email});
+            const user = await userModel.findOne({ email });
 
-            if(!user){
+            if (!user) {
                 return false;
             }
-             
+
             return {
                 user: user
             }
@@ -63,7 +63,32 @@ class ServiceUser {
             console.error(error);
             return false;
         }
-    }
+    };
+
+    async updateLastConection(email) {
+        try {
+            const user = await this.getUserbyemail(email);
+            if(!user.user){
+                return { status: (404), send: ({ message: 'User not found' }) };
+            }
+
+            const newLastConection = {
+                last_connection: Date.now()
+            }
+            const uid = user.user._id;
+            const userUpdate = await userModel.updateOne({ _id: uid }, newLastConection);
+
+            if (!userUpdate.modifiedCount) {
+                return { status: (404), send: ({ message: 'User not found' }) };
+            }
+            return { status: (200), send: ({ message: 'User updated' }) };
+
+        } catch (error) {
+            console.error(error);
+            return { status: (400), error: error, send: ({ message: 'could not update user' }) };
+        }
+
+    };
 };
 
 export default ServiceUser;

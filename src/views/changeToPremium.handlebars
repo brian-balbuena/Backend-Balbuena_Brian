@@ -1,0 +1,28 @@
+<section class="d-flex justify-content-center bg-success-subtle flex-column" id="headerProduct">
+    <h1 class="d-flex justify-content-center bg-success-subtle ">Premium</h1>
+    <div class="d-flex container-fluid justify-content-between align-items-center" {{!-- style="padding-left: 20px;"
+        --}}>
+        <div style="padding-left: 20px;" class="d-flex flex-column align-items-center">
+            <a href="/current" style="color: black;">
+                <svg xmlns="http://www.w3.org/2000/svg" width="50" height="50" fill="currentColor"
+                    class="bi bi-person-circle" viewBox="0 0 16 16">
+                    <path d="M11 6a3 3 0 1 1-6 0 3 3 0 0 1 6 0" />
+                    <path fill-rule="evenodd"
+                        d="M0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8m8-7a7 7 0 0 0-5.468 11.37C3.242 11.226 4.805 10 8 10s4.757 1.225 5.468 2.37A7 7 0 0 0 8 1" />
+
+                </svg>
+            </a>
+            <p>{{user.first_name}} {{user.last_name}}</p>
+
+        </div>
+        <button type="button" class="btn btn-secondary" id="logoutButton" style="height: 50%;">Cerrar sesion</button>
+    </div>
+</section>
+
+<section class="d-flex flex-column container justify-content-center" style="width: 50%; height: 700px">
+ <form method="POST" action='api/users/premium/{{id}}' >
+     <button type="submit" class="btn btn-success">Pasar a premium</button>
+ </form>
+
+
+</section>

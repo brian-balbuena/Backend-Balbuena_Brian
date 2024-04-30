@@ -5,19 +5,27 @@ import { createHash } from "../utils/bcrypt.js";
 
 const serviceUser = new ServiceUser();
 
-export const sessionLog = (req, res) => {
+export const sessionLog = async (req, res) => {
 
     req.session.user = {
         first_name: req.user.first_name,
         last_name: req.user.last_name,
         age: req.user.age,
         email: req.user.email,
-        role: req.user.role
+        role: req.user.role,
+        documents: req.user.documents
     };
 
     if (req.session.user) {
+        try {
+            const newConnection = await serviceUser.updateLastConection(req.user.email);
 
+        } catch (error) {
+            console.error(error);
+            return res.redirect('/failregister');
+        }
         return res.redirect('/products');
+
     } else {
 
         return res.redirect('/failregister');
@@ -36,6 +44,11 @@ export const logoutSession = async (req, res) => {
             });
         });
 
+
+
+        await serviceUser.updateLastConection(req.user.email);
+
+
         res.send({ redirect: 'http://localhost:8080/login' });
 
     } catch (error) {
@@ -46,6 +59,7 @@ export const logoutSession = async (req, res) => {
 export const current = (req, res) => {
     const { user } = req.session;
     const userDTO = new UserDTO(user);
+    
     res.render('current', userDTO);
 };
 

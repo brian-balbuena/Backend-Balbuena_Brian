@@ -30,9 +30,70 @@ const userSchema = mongoose.Schema({
     },
     role: {
         type: String,
-        enum: ['usuario', 'admin','premium'],
+        enum: ['usuario', 'admin', 'premium'],
         default: "usuario",
         required: true
+    },
+    documents: {
+        type: [
+            {
+                name: {
+                    type: String,
+                    default: "null",
+                    required: true
+
+                },
+                reference: {
+                    type: String,
+                    default: "null",
+                    required: true
+
+                }
+            }
+        ],
+        default: [
+            {
+                name: "profiles",
+                reference: "null"
+            },
+            {
+                name: "products",
+                reference: "null"
+            },
+            {
+                name: "documents",
+                reference: "null"
+               /*  documents: 
+                [
+                    {
+                        name: "identification",
+                        reference: "null"
+                    },
+                    {
+                        name: "proofOfAddress",
+                        reference: "null"
+                    },
+                    {
+                        name: "proofOfAccountnts",
+                        reference: "null"
+                    }
+    
+                ] */
+            },
+            {
+                name: "documents",
+                reference: "null"
+            },
+            {
+                name: "documents",
+                reference: "null"
+            }
+
+        ]
+    },
+    last_connection: {
+        type: Date,
+        default: Date.now
     }
 
 });

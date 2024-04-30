@@ -1,7 +1,7 @@
 import { idVerification } from "../controllers/product.controller.js";
 
 export const checkAuth = (req, res, next) => {
-console.log('entra', req.session.user)
+
     if (!req.session.user) {
         return res.redirect('/login')
     }
@@ -50,4 +50,11 @@ export const checkRolPremium = async (req, res, next) => {
         }
     }
     next();
+};
+
+export const checkUploaderDocuments = async (req, res, next) => {
+
+   /*  console.log('trae', req.session.user) */
+
+   /* FIILTRAR SI TIENE CARGADO O NO LOS ARCHIVOS DOCUMETS */
 };

@@ -32,8 +32,20 @@
             aria-describedby="inputGroup-sizing-lg" value="{{age}}" readonly>
     </div>
 
+
+    <div class="input-group input-group-lg" style="margin: 20px 0;">
+        <form method="post" action="api/users/662881d1143e8736c9160f61/documents" enctype="multipart/form-data">
+            <div class="input-group">
+                <button class="btn btn-success"  style="text-decoration: none; color: white;" type="submit">Agregar foto de perfil</button>
+                <input type="file" class="form-control" id="profiles" name="profiles" aria-describedby="inputGroupFileAddon04"
+                    aria-label="Upload">
+            </div>
+        </form>
+    </div>
+
+
     <div>
-          <button type="button" class="btn btn-success" style=" margin: 10px;"><a href="/api/mailing/sendMail"
-                        style="text-decoration: none; color: white;">Cambiar contraseña</a></button>
+        <button type="button" class="btn btn-success" style=" margin: 10px;"><a href="/api/mailing/sendMail"
+                style="text-decoration: none; color: white;">Cambiar contraseña</a></button>
     </div>
 </section>
