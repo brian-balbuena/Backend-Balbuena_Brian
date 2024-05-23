@@ -89,6 +89,51 @@ class ServiceUser {
         }
 
     };
+
+    /************ENTEGA FINAL *********** */
+
+    async getUsers() {
+
+        try {
+            const users = await userModel.find();
+            return { status: (200), send: ({ users }) };
+        } catch (error) {
+            console.error(error);
+            return { status: (404), send: ({ message: 'users not found' }) };
+        }
+    };
+
+    async deleteUsers(email) {
+        try {
+            const userDeleted = await userModel.deleteOne({ email: email })
+ 
+            if (!userDeleted.deletedCount) {
+                return {status:(404), send:({ message: 'user not found' })};
+            };
+            return {status:(200), send:({ message: 'user deleted' })};
+        } catch (error) {
+            console.error(error);
+            return {status:(400), error: error, send:({ message: 'could not delete ' })};
+        }
+    };
+
+    async updateRole(email, newRole) {
+
+        try {
+            
+            const userUpdate = await userModel.updateOne({ email: email }, { $set: { role: newRole } });
+
+            if (!userUpdate.modifiedCount) {
+                return { status: (404), send: ({ message: 'User not found' }) };
+            }
+            return { status: (200), send: ({ message: 'User updated' }) };
+
+        } catch (error) {
+            console.error(error);
+            return { status: (400), error: error, send: ({ message: 'could not update user' }) };
+        }
+    };
+    /**************************************** */
 };
 
 export default ServiceUser;

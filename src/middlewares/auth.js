@@ -20,8 +20,8 @@ export const checkRoleUser = (req, res, next) => {
 
     if (!req.session.user) {
         return res.redirect('/login')
-    } if (req.session.user.role === 'admin' ) {
-        return res.redirect('/createProduct');
+    } if (req.session.user.role === 'admin') {
+        return res.redirect('/manageUsers');
     }
     next();
 };
@@ -29,7 +29,7 @@ export const checkRoleUser = (req, res, next) => {
 export const checkRolAdmin = async (req, res, next) => {
     if (!req.session.user) {
         return res.redirect('/login')
-    } if (req.session.user.role === 'usuario') {
+    } if (!req.session.user.role === 'admin') {
         return res.redirect('/products');
     }
 
@@ -40,7 +40,7 @@ export const checkRolPremium = async (req, res, next) => {
 
     if (!req.session.user) {
         return res.redirect('/login')
-    }if (req.session.user.role === 'premium') {
+    } if (req.session.user.role === 'premium') {
         const { pId } = req.params;
         if (pId) {
             const verification = await idVerification(pId, req.session.user)
@@ -54,7 +54,12 @@ export const checkRolPremium = async (req, res, next) => {
 
 export const checkUploaderDocuments = async (req, res, next) => {
 
-   /*  console.log('trae', req.session.user) */
 
-   /* FIILTRAR SI TIENE CARGADO O NO LOS ARCHIVOS DOCUMETS */
+    if (!req.session.user.documents) {
+        return res.redirect('/current')
+    } if (req.session.user.documents.some(item => item.name === 'documents')) {
+        next();
+    } else {
+        return res.redirect('/current');
+    }
 };

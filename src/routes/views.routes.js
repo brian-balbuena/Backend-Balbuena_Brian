@@ -3,7 +3,7 @@ import { checkAuth, checkExistingUser, checkRolAdmin, checkRoleUser } from "../m
 import { getMokingProducts, getProduct } from "../controllers/product.controller.js";
 import { getCartId } from "../controllers/cart.controller.js";
 import { current } from "../controllers/session.controller.js";
-import { getIdByEmail } from "../controllers/user.controller.js";
+import { getApiUsersData, getIdByEmail } from "../controllers/user.controller.js";
 
 const viewRouters = Router();
 
@@ -101,4 +101,13 @@ viewRouters.get('/changeToPremium', checkRoleUser, async (req, res) => {
     res.render('changeToPremium', { user, id })
 
 });
+
+/************ENTEGA FINAL *********** */
+
+viewRouters.get('/manageUsers', checkRolAdmin, async (req, res) =>{
+
+    const users = await getApiUsersData();
+    res.render('manageUsers', { users })
+})
+/* *************************************** */
 export default viewRouters;

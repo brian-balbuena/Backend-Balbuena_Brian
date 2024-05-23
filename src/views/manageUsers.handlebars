@@ -1,0 +1,47 @@
+<section class="d-flex justify-content-center bg-success-subtle flex-column" id="headerProduct">
+    <h1 class="d-flex justify-content-center bg-success-subtle ">User management</h1>
+
+</section>
+
+<section class="d-flex flex-column container justify-content-start" style="width: 50%; height: 700px">
+    <table class="table mt-3">
+        <thead>
+            <tr>
+                <th scope="col">#</th>
+                <th scope="col">First</th>
+                <th scope="col">Last</th>
+                <th scope="col">Email</th>
+                <th scope="col">Age</th>
+                <th scope="col">Role</th>
+            </tr>
+        </thead>
+        <tbody>
+            {{#each users}}
+            <tr>
+                <th scope="row">{{@index}}</th>
+                <td>{{first_name}}</td>
+                <td>{{last_name}}</td>
+                <td>{{email}}</td>
+                <td>{{age}}</td>
+                <td>{{role}}</td>
+                <td>
+                    <div class="btn-group" role="group" aria-label="Basic example">
+                        <button type="button" class="btn btn-warning" onclick="ChangeOfRole(`{{email}}`, `{{role}}`)">Editar role</button>
+                        <div  class=" btn-primary" style="width: 10px;"></div>
+                        <button type="button" class="btn btn-danger" onclick="deleteUser(`{{email}}`)" id="deletedButton">Eliminar usuario</button>
+                    </div>
+                </td>
+            </tr>
+            {{/each}}
+        </tbody>
+    </table>
+</section>
+
+
+<script>
+    const email = "{{email}}"
+    const role = "{{role}}"
+    
+</script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script src="js/management.js"></script>

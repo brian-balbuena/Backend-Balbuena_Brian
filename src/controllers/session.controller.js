@@ -13,7 +13,8 @@ export const sessionLog = async (req, res) => {
         age: req.user.age,
         email: req.user.email,
         role: req.user.role,
-        documents: req.user.documents
+        documents: req.user.documents,
+        last_connection: Date.now
     };
 
     if (req.session.user) {

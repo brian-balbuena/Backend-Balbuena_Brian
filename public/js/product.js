@@ -1,7 +1,6 @@
 
 
 
-
 const headerPage = document.getElementById('headerProduct');
 if(userRole === 'admin'){
    headerPage.className = "d-flex justify-content-center bg-danger flex-column";
