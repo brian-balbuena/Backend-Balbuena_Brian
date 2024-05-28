@@ -12,6 +12,7 @@ export const getProduct = async (req, res) => {
     const { user } = req.session;
     const userDTO = new UserDTO(user);
 
+    console.log('PUERTO', process.env.PORT)
     try {
         const serviceProduct = new ServiceProduct();
 
