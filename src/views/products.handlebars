@@ -15,7 +15,7 @@
             <p>{{firstName}} {{lastName}}</p>
 
         </div>
-        <button type="button" class="btn btn-secondary" id="logoutButton" style="height: 50%;">Cerrar sesion</button>
+        <button type="button" class="btn btn-secondary" id="logoutButton" onclick="logout(`{{port}}`)" style="height: 50%;">Cerrar sesion</button>
     </div>
 </section>
 
@@ -69,6 +69,7 @@
     const userFirstName = "{{firstName}}";
     const userLastName = "{{lastName}}"
     const userRole = "{{role}}"
+    const port = "{{port}}"
 </script>
 
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>

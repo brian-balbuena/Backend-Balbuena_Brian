@@ -12,14 +12,14 @@ export const getProduct = async (req, res) => {
     const { user } = req.session;
     const userDTO = new UserDTO(user);
 
-    console.log('PUERTO', process.env.PORT)
+    const port = process.env.PORT;
     try {
         const serviceProduct = new ServiceProduct();
 
         const products = await serviceProduct.getProductService(limit, page, query, sort);
 
         if (products) {
-            res.render('products', { products, firstName: userDTO.first_name, lastName: userDTO.last_name, role: userDTO.role });
+            res.render('products', { products, firstName: userDTO.first_name, lastName: userDTO.last_name, role: userDTO.role, port: port });
         } else {
             req.logger.error('product error');
             res.status(400).send({ message: 'product not found' })
