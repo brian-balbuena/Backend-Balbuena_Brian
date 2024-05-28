@@ -35,6 +35,7 @@ export const sessionLog = async (req, res) => {
 
 export const logoutSession = async (req, res) => {
     try {
+        const port = process.env.PORT;
         await new Promise((resolve, reject) => {
             req.session.destroy((error) => {
                 if (error) {
@@ -50,7 +51,7 @@ export const logoutSession = async (req, res) => {
         await serviceUser.updateLastConection(req.user.email);
 
 
-        res.send({ redirect: 'http://localhost:8080/login' });
+        res.send({ redirect: `http://localhost:${port}/login` });
 
     } catch (error) {
         res.status(400).send({ error });
