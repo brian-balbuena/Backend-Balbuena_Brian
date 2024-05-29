@@ -3,6 +3,7 @@ import handlebars from 'express-handlebars'
 import { Server, Socket } from 'socket.io';
 import swaggerJSDoc from 'swagger-jsdoc';
 import swaggerUIExpress from 'swagger-ui-express'
+import cors from 'cors';
 
 import productsRouter from './routes/products.routes.js';
 import cartsRouter from './routes/carts.routes.js';
@@ -64,6 +65,12 @@ const hbs = handlebars.create({
         allowProtoPropertiesByDefault: true
     }
 });
+
+const ports = process.env.RAILWAY_PORT;
+app.use(cors({
+    origin: `http://localhost:${ports}`, // Cambia esto a la URL de tu frontend
+    credentials: true
+  }));
 
 app.engine('handlebars', hbs.engine);
 app.set('views', 'src/views');

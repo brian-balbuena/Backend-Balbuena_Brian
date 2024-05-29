@@ -35,7 +35,7 @@ export const sessionLog = async (req, res) => {
 
 export const logoutSession = async (req, res) => {
     try {
-        const port = process.env.RAILWAY_PORT;
+        const port = process.env.PORT;
         
         await new Promise((resolve, reject) => {
             req.session.destroy((error) => {
