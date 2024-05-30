@@ -67,10 +67,10 @@ const hbs = handlebars.create({
 });
 
 const ports = process.env.RAILWAY_PORT;
-app.use(cors({
+/* app.use(cors({
     origin: `https://backend-balbuenabrian-production.up.railway.app`, 
     credentials: true
-  }));
+  })); */
 
 app.engine('handlebars', hbs.engine);
 app.set('views', 'src/views');
