@@ -104,14 +104,17 @@ const logoutButton = document.getElementById('logoutButton');
 }); */
 
 
-async function logout(port) {
+async function logout(port, domain) {
 
-   const result = await fetch(`http://localhost:${port}/api/session/logout`, {
+   console.log('dominio', domain)
+   const result = await fetch(`${domain}${port}/api/session/logout`, {
       method: 'post',
       headers: {
          'Content-Type': 'application/json'
       }
    })
+
+
 
    const { redirect } = await result.json();
    window.location.href = redirect

@@ -36,6 +36,7 @@ export const sessionLog = async (req, res) => {
 export const logoutSession = async (req, res) => {
     try {
         const port = process.env.PORT;
+        const domain = process.env.PUBLIC_DOMAIN;
         
         await new Promise((resolve, reject) => {
             req.session.destroy((error) => {

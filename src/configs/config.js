@@ -15,6 +15,7 @@ export const getVariables = (option) => {
         work_environment: process.env.work_environment,
         mailing_user: process.env.mailing_user,
         mailing_service: process.env.mailing_service,
-        mailing_password: process.env.mailing_password
+        mailing_password: process.env.mailing_password,
+        PUBLIC_DOMAIN: process.env.PUBLIC_DOMAIN
       }
 };
