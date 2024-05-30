@@ -29,7 +29,7 @@ import { swaggerConfiguration } from './utils/swagger-configuration.js';
 const program = new Command();
 program.option('--mode <mode>', 'Modo de trabajo', 'production');
 const option = program.parse();
-const { port , mongoURL, secret, work_environment,mailing_user, mailing_service,  mailing_password, PUBLIC_DOMAIN} = getVariables(option);
+const { port , mongoURL, secret, work_environment,mailing_user, mailing_service,  mailing_password} = getVariables(option);
 
 export const mailingConfig = {
  user: mailing_user,
