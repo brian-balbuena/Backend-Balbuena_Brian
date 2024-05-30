@@ -5,6 +5,7 @@ import swaggerJSDoc from 'swagger-jsdoc';
 import swaggerUIExpress from 'swagger-ui-express'
 import cors from 'cors';
 
+
 import productsRouter from './routes/products.routes.js';
 import cartsRouter from './routes/carts.routes.js';
 import viewRouters from './routes/views.routes.js';
@@ -71,6 +72,17 @@ const ports = process.env.RAILWAY_PORT;
     origin: `https://backend-balbuenabrian-production.up.railway.app`, 
     credentials: true
   })); */
+  const corsOptions = {
+    origin: 'https://backend-balbuenabrian-production.up.railway.app',
+    methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+    allowedHeaders: ['Content-Type', 'Authorization'],
+    credentials: true
+ };
+ 
+ app.use(cors(corsOptions));
+ 
+ // Middleware para manejar preflight requests
+ app.options('*', cors(corsOptions));
 
 app.engine('handlebars', hbs.engine);
 app.set('views', 'src/views');
