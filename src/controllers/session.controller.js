@@ -53,7 +53,7 @@ export const logoutSession = async (req, res) => {
         await serviceUser.updateLastConection(req.user.email);
 
 
-        res.send({ redirect: `${domain}/login` });
+        res.send({ redirect: `/login` });
 
     } catch (error) {
         res.status(400).send({ error });
