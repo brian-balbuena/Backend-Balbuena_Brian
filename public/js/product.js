@@ -107,7 +107,7 @@ const logoutButton = document.getElementById('logoutButton');
 async function logout(port, domain) {
 
    console.log('dominio', domain)
-   const result = await fetch('http://localhost:8080/api/session/logout', {
+   const result = await fetch('/api/session/logout', {
       method: 'post',
       credentials: 'include',
       headers: {
